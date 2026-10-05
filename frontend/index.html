@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#02030A"
+    >
+
+    <title>Q-SHIELD | Quantum Security Command Center</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+</head>
+
+<body>
+
+    <!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
+
+    <div class="background-grid"></div>
+    <div class="background-noise"></div>
+
+    <div class="ambient-glow glow-one"></div>
+    <div class="ambient-glow glow-two"></div>
+
+
+    <!-- =====================================================
+         TOP NAVIGATION
+    ====================================================== -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                Q
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Q-SHIELD
+                </div>
+
+                <div class="brand-subtitle">
+                    QUANTUM SECURITY FABRIC
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            <span>
+                QUANTUM SECURITY
+            </span>
+
+            <span class="status-online">
+                ONLINE
+            </span>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="dashboard">
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section class="hero">
+
+            <div class="hero-copy">
+
+                <div class="eyebrow">
+                    CRITICAL INFRASTRUCTURE PROTECTION
+                </div>
+
+                <h1>
+                    QUANTUM
+                    <span>SECURITY</span>
+                    COMMAND CENTER
+                </h1>
+
+                <p>
+                    Real-time BB84 quantum key distribution
+                    simulation, intrusion detection and
+                    secure communication monitoring.
+                </p>
+
+            </div>
+
+
+            <div class="protocol-card">
+
+                <div class="protocol-label">
+                    ACTIVE PROTOCOL
+                </div>
+
+                <div class="protocol-name">
+                    BB84
+                </div>
+
+                <div class="protocol-description">
+                    Quantum Key Distribution
+                </div>
+
+                <div class="protocol-line"></div>
+
+                <div class="protocol-meta">
+
+                    <span>
+                        QUANTUM STATES
+                    </span>
+
+                    <strong>
+                        512
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             QUANTUM NETWORK
+        ================================================== -->
+
+        <section class="panel network-panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <div class="panel-kicker">
+                        QUANTUM NETWORK
+                    </div>
+
+                    <h2>
+                        SECURE COMMUNICATION FABRIC
+                    </h2>
+                </div>
+
+                <div class="live-badge">
+                    <span></span>
+                    LIVE
+                </div>
+
+            </div>
+
+
+            <div class="network">
+
+                <!-- ALICE -->
+
+                <div class="node node-alice">
+
+                    <div class="node-orbit">
+
+                        <div class="node-core">
+                            A
+                        </div>
+
+                    </div>
+
+                    <div class="node-name">
+                        ALICE
+                    </div>
+
+                    <div class="node-role">
+                        CONTROL CENTER
+                    </div>
+
+                </div>
+
+
+                <!-- QUANTUM CHANNEL -->
+
+                <div class="quantum-link">
+
+                    <div class="link-label">
+                        QUANTUM CHANNEL
+                    </div>
+
+                    <div class="link-line">
+
+                        <span class="particle p1"></span>
+                        <span class="particle p2"></span>
+                        <span class="particle p3"></span>
+
+                    </div>
+
+                    <div class="quantum-states">
+
+                        <span>|0⟩</span>
+                        <span>|+⟩</span>
+                        <span>|1⟩</span>
+                        <span>|−⟩</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EVE -->
+
+                <div class="eve-interceptor">
+
+                    <div class="eve-ring">
+
+                        <div class="eve-core">
+                            E
+                        </div>
+
+                    </div>
+
+                    <div class="eve-name">
+                        EVE
+                    </div>
+
+                    <div class="eve-role">
+                        THREAT ACTOR
+                    </div>
+
+                </div>
+
+
+                <!-- BOB -->
+
+                <div class="node node-bob">
+
+                    <div class="node-orbit">
+
+                        <div class="node-core">
+                            B
+                        </div>
+
+                    </div>
+
+                    <div class="node-name">
+                        BOB
+                    </div>
+
+                    <div class="node-role">
+                        REMOTE FACILITY
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             TELEMETRY
+        ================================================== -->
+
+        <section class="telemetry-grid">
+
+
+            <!-- QBER -->
+
+            <article class="telemetry-card qber-card">
+
+                <div class="telemetry-top">
+
+                    <span class="telemetry-label">
+                        QUANTUM BIT ERROR RATE
+                    </span>
+
+                    <span
+                        id="qberStatus"
+                        class="telemetry-state"
+                    >
+                        WITHIN POLICY
+                    </span>
+
+                </div>
+
+
+                <div class="metric-large">
+
+                    <span id="qberValue">
+                        0.00%
+                    </span>
+
+                </div>
+
+
+                <div class="qber-scale">
+
+                    <div class="qber-track">
+
+                        <div
+                            id="qberFill"
+                            class="qber-fill"
+                            style="width: 0%"
+                        ></div>
+
+                    </div>
+
+                    <div class="qber-markers">
+
+                        <span>
+                            0%
+                        </span>
+
+                        <span>
+                            11% POLICY
+                        </span>
+
+                        <span>
+                            25%
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- KEY -->
+
+            <article class="telemetry-card">
+
+                <div class="telemetry-top">
+
+                    <span class="telemetry-label">
+                        SHARED KEY
+                    </span>
+
+                    <span class="telemetry-icon">
+                        ◈
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="keyLength"
+                    class="metric-large"
+                >
+                    0 BITS
+                </div>
+
+
+                <div
+                    id="keyStatus"
+                    class="metric-subtext"
+                >
+                    WAITING
+                </div>
+
+            </article>
+
+
+
+            <!-- EVE -->
+
+            <article class="telemetry-card eve-card">
+
+                <div class="telemetry-top">
+
+                    <span class="telemetry-label">
+                        EVE ACTIVITY
+                    </span>
+
+                    <span class="telemetry-icon">
+                        ◉
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="eveCount"
+                    class="metric-large"
+                >
+                    0 STATES
+                </div>
+
+
+                <div
+                    id="eveState"
+                    class="metric-subtext"
+                >
+                    INACTIVE
+                </div>
+
+            </article>
+
+
+
+            <!-- THREAT -->
+
+            <article class="telemetry-card threat-card">
+
+                <div class="telemetry-top">
+
+                    <span class="telemetry-label">
+                        CHANNEL THREAT
+                    </span>
+
+                    <span class="telemetry-icon">
+                        !
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="threatLevel"
+                    class="metric-large"
+                >
+                    LOW
+                </div>
+
+
+                <div class="metric-subtext">
+                    SECURITY CLASSIFICATION
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =================================================
+             OPERATIONS
+        ================================================== -->
+
+        <section class="operations-grid">
+
+
+            <!-- =============================================
+                 SECURITY CONTROL
+            ============================================== -->
+
+            <article class="panel control-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <div class="panel-kicker">
+                            ATTACK SIMULATION
+                        </div>
+
+                        <h2>
+                            EAVESDROPPER CONTROL
+                        </h2>
+
+                    </div>
+
+                    <div class="control-indicator">
+                        EVE
+                    </div>
+
+                </div>
+
+
+                <div class="eve-control">
+
+                    <div class="control-row">
+
+                        <span>
+                            INTERCEPTION PROBABILITY
+                        </span>
+
+                        <strong id="eveProbability">
+                            0%
+                        </strong>
+
+                    </div>
+
+
+                    <input
+                        type="range"
+                        id="eveSlider"
+                        min="0"
+                        max="100"
+                        value="0"
+                        step="5"
+                    >
+
+
+                    <div class="slider-labels">
+
+                        <span>
+                            0%
+                        </span>
+
+                        <span>
+                            25%
+                        </span>
+
+                        <span>
+                            50%
+                        </span>
+
+                        <span>
+                            75%
+                        </span>
+
+                        <span>
+                            100%
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="button-row">
+
+                    <button
+                        id="generateButton"
+                        class="primary-button"
+                    >
+                        <span>◈</span>
+                        GENERATE SECURE KEY
+                    </button>
+
+
+                    <button
+                        id="attackButton"
+                        class="danger-button"
+                    >
+                        <span>⚠</span>
+                        SIMULATE ATTACK
+                    </button>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- =============================================
+                 SECURE MESSAGE
+            ============================================== -->
+
+            <article class="panel message-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <div class="panel-kicker">
+                            CRITICAL COMMAND CHANNEL
+                        </div>
+
+                        <h2>
+                            SECURE TRANSMISSION
+                        </h2>
+
+                    </div>
+
+                    <div class="lock-icon">
+                        ⌁
+                    </div>
+
+                </div>
+
+
+                <label
+                    for="secureMessage"
+                    class="message-label"
+                >
+                    SENSITIVE INFRASTRUCTURE PAYLOAD
+                </label>
+
+
+                <textarea
+                    id="secureMessage"
+                    rows="4"
+                    placeholder="Enter a critical infrastructure command..."
+                >Increase cooling system output to 92%.</textarea>
+
+
+                <button
+                    id="sendMessageButton"
+                    class="transmit-button"
+                >
+                    ENCRYPT &amp; TRANSMIT
+                </button>
+
+
+                <div class="message-result">
+
+                    <div
+                        id="messageState"
+                        class="message-state"
+                    >
+                        READY
+                    </div>
+
+                    <div
+                        id="messageText"
+                        class="message-text"
+                    >
+                        Awaiting secure transmission.
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SECURITY STATE
+        ================================================== -->
+
+        <section class="security-state panel">
+
+            <div
+                id="securityIcon"
+                class="security-icon"
+            >
+                ✓
+            </div>
+
+
+            <div class="security-copy">
+
+                <div class="panel-kicker">
+                    SYSTEM SECURITY STATE
+                </div>
+
+                <h2 id="securityStatus">
+                    SECURE
+                </h2>
+
+                <p id="securityDescription">
+                    Quantum channel integrity verified.
+                </p>
+
+            </div>
+
+
+            <div class="security-meta">
+
+                <div>
+                    <span>
+                        PROTOCOL
+                    </span>
+
+                    <strong>
+                        BB84
+                    </strong>
+                </div>
+
+
+                <div>
+                    <span>
+                        POLICY
+                    </span>
+
+                    <strong>
+                        11% QBER
+                    </strong>
+                </div>
+
+
+                <div>
+                    <span>
+                        CHANNEL
+                    </span>
+
+                    <strong>
+                        ACTIVE
+                    </strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             EVENT LOG
+        ================================================== -->
+
+        <section class="panel event-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-kicker">
+                        SECURITY TELEMETRY
+                    </div>
+
+                    <h2>
+                        EVENT STREAM
+                    </h2>
+
+                </div>
+
+                <div class="event-live">
+                    LIVE FEED
+                </div>
+
+            </div>
+
+
+            <div
+                id="eventLog"
+                class="event-log"
+            >
+
+                <div class="event event-system">
+
+                    <span class="event-time">
+                        --:--:--
+                    </span>
+
+                    <span class="event-type">
+                        SYSTEM
+                    </span>
+
+                    <span class="event-message">
+                        Initializing Q-SHIELD security fabric...
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="footer">
+
+            <div>
+                Q-SHIELD
+            </div>
+
+            <div>
+                QUANTUM-SECURE COMMUNICATION
+            </div>
+
+            <div>
+                BB84 • QKD • INTRUSION DETECTION
+            </div>
+
+        </footer>
+
+    </main>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="/static/app.js"></script>
+
+</body>
+</html>
+

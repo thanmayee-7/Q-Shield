@@ -1,0 +1,2464 @@
+
+/* ============================================================
+   Q-SHIELD
+   QUANTUM SECURITY COMMAND CENTER
+   FUTURISTIC SOC / QUANTUM INTERFACE
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800&display=swap');
+
+
+/* ============================================================
+   VARIABLES
+   ============================================================ */
+
+:root {
+
+    --void: #02030a;
+    --void-2: #040713;
+    --deep: #070b1c;
+
+    --panel: rgba(7, 12, 30, 0.82);
+    --panel-2: rgba(10, 17, 40, 0.9);
+
+    --cyan: #39f3ff;
+    --cyan-dark: #08a8c5;
+
+    --violet: #9d6cff;
+    --purple: #713cff;
+
+    --green: #4dffb0;
+    --yellow: #ffd166;
+    --orange: #ff9f43;
+    --red: #ff3d71;
+
+    --white: #eafcff;
+    --text: #c8d8ec;
+    --muted: #667d9e;
+
+    --border: rgba(57, 243, 255, 0.14);
+    --border-bright: rgba(57, 243, 255, 0.38);
+
+    --shadow:
+        0 20px 60px rgba(0, 0, 0, 0.55);
+
+    --cyan-glow:
+        0 0 12px rgba(57, 243, 255, 0.45),
+        0 0 35px rgba(57, 243, 255, 0.18);
+
+    --violet-glow:
+        0 0 15px rgba(157, 108, 255, 0.5),
+        0 0 40px rgba(113, 60, 255, 0.2);
+
+    --red-glow:
+        0 0 15px rgba(255, 61, 113, 0.55),
+        0 0 45px rgba(255, 61, 113, 0.18);
+}
+
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(57, 243, 255, 0.055),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(157, 108, 255, 0.07),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(113, 60, 255, 0.055),
+            transparent 35%
+        ),
+        var(--void);
+
+    color: var(--white);
+
+    font-family:
+        Inter,
+        Arial,
+        sans-serif;
+
+    overflow-x: hidden;
+}
+
+
+/* ============================================================
+   BACKGROUND GRID
+   ============================================================ */
+
+.background-grid {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: -5;
+
+    pointer-events: none;
+
+    opacity: 0.4;
+
+    background-image:
+        linear-gradient(
+            rgba(57, 243, 255, 0.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(57, 243, 255, 0.035) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        45px 45px;
+
+    mask-image:
+        radial-gradient(
+            ellipse at center,
+            black 20%,
+            transparent 85%
+        );
+}
+
+
+/* ============================================================
+   SCANLINES / NOISE
+   ============================================================ */
+
+.background-noise {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: -4;
+
+    pointer-events: none;
+
+    opacity: 0.035;
+
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,0.5) 0px,
+            rgba(255,255,255,0.5) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+}
+
+
+/* ============================================================
+   AMBIENT GLOWS
+   ============================================================ */
+
+.ambient-glow {
+
+    position: fixed;
+
+    width: 420px;
+    height: 420px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    filter: blur(100px);
+
+    z-index: -3;
+
+    opacity: 0.13;
+}
+
+
+.glow-one {
+
+    top: 8%;
+    left: -180px;
+
+    background: var(--cyan);
+}
+
+
+.glow-two {
+
+    right: -180px;
+    top: 40%;
+
+    background: var(--violet);
+}
+
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+
+.topbar {
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+    height: 76px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding:
+        0 clamp(20px, 4vw, 65px);
+
+    background:
+        rgba(2, 3, 10, 0.82);
+
+    backdrop-filter:
+        blur(18px);
+
+    border-bottom:
+        1px solid var(--border);
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,0.3);
+}
+
+
+/* ============================================================
+   BRAND
+   ============================================================ */
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+
+.brand-mark {
+
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+
+    place-items: center;
+
+    border:
+        1px solid var(--cyan);
+
+    color: var(--cyan);
+
+    font-family: Orbitron, sans-serif;
+
+    font-weight: 800;
+
+    font-size: 18px;
+
+    box-shadow:
+        var(--cyan-glow);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(57,243,255,0.12),
+            rgba(157,108,255,0.08)
+        );
+
+    transform:
+        skew(-8deg);
+
+    position: relative;
+}
+
+
+.brand-mark::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 4px;
+
+    border:
+        1px solid rgba(157,108,255,0.3);
+
+    pointer-events: none;
+}
+
+
+.brand-name {
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 17px;
+
+    letter-spacing: 3px;
+
+    font-weight: 700;
+}
+
+
+.brand-subtitle {
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    margin-top: 4px;
+}
+
+
+.system-status {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    font-size: 10px;
+
+    letter-spacing: 1.7px;
+
+    color: var(--muted);
+}
+
+
+.status-dot {
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 8px var(--green);
+
+    animation:
+        pulseDot 1.5s infinite;
+}
+
+
+.status-online {
+
+    color: var(--green);
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 9px;
+}
+
+
+@keyframes pulseDot {
+
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.45;
+        transform: scale(0.7);
+    }
+}
+
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+
+.dashboard {
+
+    width: min(1480px, 94%);
+
+    margin:
+        0 auto;
+
+    padding:
+        55px 0 35px;
+}
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        310px;
+
+    gap: 50px;
+
+    align-items: center;
+
+    margin-bottom: 40px;
+}
+
+
+.eyebrow {
+
+    color: var(--cyan);
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 15px;
+}
+
+
+.hero h1 {
+
+    font-family: Orbitron, sans-serif;
+
+    font-size:
+        clamp(32px, 5vw, 66px);
+
+    line-height: 1.04;
+
+    letter-spacing: -2px;
+
+    font-weight: 700;
+
+    max-width: 850px;
+
+    text-shadow:
+        0 0 35px rgba(57,243,255,0.08);
+}
+
+
+.hero h1 span {
+
+    display: block;
+
+    color: transparent;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--cyan),
+            #9df8ff 38%,
+            var(--violet) 80%
+        );
+
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+
+
+.hero p {
+
+    margin-top: 22px;
+
+    max-width: 700px;
+
+    color: var(--muted);
+
+    line-height: 1.75;
+
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   PROTOCOL CARD
+   ============================================================ */
+
+.protocol-card {
+
+    position: relative;
+
+    padding: 26px;
+
+    min-height: 190px;
+
+    border:
+        1px solid var(--border-bright);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(12,25,52,0.8),
+            rgba(8,10,26,0.88)
+        );
+
+    box-shadow:
+        var(--shadow),
+        inset 0 0 35px rgba(57,243,255,0.025);
+
+    overflow: hidden;
+}
+
+
+.protocol-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 130px;
+    height: 130px;
+
+    right: -55px;
+    top: -55px;
+
+    border:
+        1px solid rgba(57,243,255,0.2);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 0 15px rgba(57,243,255,0.025),
+        0 0 0 30px rgba(57,243,255,0.018);
+}
+
+
+.protocol-label {
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+}
+
+
+.protocol-name {
+
+    font-family: Orbitron, sans-serif;
+
+    color: var(--cyan);
+
+    font-size: 42px;
+
+    font-weight: 700;
+
+    margin-top: 10px;
+
+    text-shadow:
+        var(--cyan-glow);
+}
+
+
+.protocol-description {
+
+    color: var(--text);
+
+    font-size: 12px;
+
+    margin-top: 4px;
+}
+
+
+.protocol-line {
+
+    height: 1px;
+
+    margin: 20px 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--cyan),
+            transparent
+        );
+
+    opacity: 0.5;
+}
+
+
+.protocol-meta {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+}
+
+
+.protocol-meta strong {
+
+    color: var(--cyan);
+
+    font-family: Orbitron, sans-serif;
+}
+
+
+/* ============================================================
+   PANELS
+   ============================================================ */
+
+.panel {
+
+    position: relative;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8,15,35,0.88),
+            rgba(4,7,19,0.94)
+        );
+
+    border:
+        1px solid var(--border);
+
+    box-shadow:
+        var(--shadow);
+
+    overflow: hidden;
+}
+
+
+.panel::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(57,243,255,0.6),
+            transparent
+        );
+
+    opacity: 0.5;
+}
+
+
+.panel-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 22px 24px;
+
+    border-bottom:
+        1px solid rgba(57,243,255,0.08);
+}
+
+
+.panel-kicker {
+
+    color: var(--cyan);
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 7px;
+}
+
+
+.panel h2 {
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 14px;
+
+    letter-spacing: 1px;
+
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   LIVE BADGE
+   ============================================================ */
+
+.live-badge {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: var(--green);
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+}
+
+
+.live-badge span {
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 10px var(--green);
+
+    animation:
+        pulseDot 1s infinite;
+}
+
+
+/* ============================================================
+   QUANTUM NETWORK
+   ============================================================ */
+
+.network-panel {
+
+    margin-bottom: 18px;
+}
+
+
+.network {
+
+    min-height: 310px;
+
+    padding:
+        50px 55px;
+
+    display: grid;
+
+    grid-template-columns:
+        150px
+        minmax(180px, 1fr)
+        120px
+        150px;
+
+    gap: 25px;
+
+    align-items: center;
+
+    position: relative;
+}
+
+
+/* ============================================================
+   NODES
+   ============================================================ */
+
+.node {
+
+    text-align: center;
+
+    position: relative;
+
+    z-index: 3;
+}
+
+
+.node-orbit {
+
+    width: 92px;
+    height: 92px;
+
+    margin: 0 auto 15px;
+
+    display: grid;
+
+    place-items: center;
+
+    border:
+        1px solid rgba(57,243,255,0.4);
+
+    border-radius: 50%;
+
+    position: relative;
+
+    box-shadow:
+        inset 0 0 25px rgba(57,243,255,0.07),
+        0 0 20px rgba(57,243,255,0.06);
+
+    animation:
+        orbitPulse 3s ease-in-out infinite;
+}
+
+
+.node-orbit::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -9px;
+
+    border:
+        1px dashed rgba(57,243,255,0.2);
+
+    border-radius: 50%;
+
+    animation:
+        rotate 9s linear infinite;
+}
+
+
+.node-orbit::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 5px;
+    height: 5px;
+
+    top: -11px;
+
+    border-radius: 50%;
+
+    background: var(--cyan);
+
+    box-shadow:
+        0 0 12px var(--cyan);
+}
+
+
+.node-core {
+
+    width: 56px;
+    height: 56px;
+
+    display: grid;
+
+    place-items: center;
+
+    border:
+        1px solid var(--cyan);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(57,243,255,0.16),
+            rgba(3,8,22,0.95)
+        );
+
+    color: var(--cyan);
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 20px;
+
+    box-shadow:
+        var(--cyan-glow);
+
+    border-radius: 50%;
+}
+
+
+.node-name {
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 13px;
+
+    letter-spacing: 2px;
+}
+
+
+.node-role {
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+    letter-spacing: 1.2px;
+
+    margin-top: 6px;
+}
+
+
+@keyframes orbitPulse {
+
+    0%, 100% {
+        box-shadow:
+            inset 0 0 25px rgba(57,243,255,0.07),
+            0 0 20px rgba(57,243,255,0.06);
+    }
+
+    50% {
+        box-shadow:
+            inset 0 0 35px rgba(57,243,255,0.12),
+            0 0 35px rgba(57,243,255,0.13);
+    }
+}
+
+
+@keyframes rotate {
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   QUANTUM LINK
+   ============================================================ */
+
+.quantum-link {
+
+    position: relative;
+
+    text-align: center;
+}
+
+
+.link-label {
+
+    color: var(--cyan);
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 7px;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 13px;
+}
+
+
+.link-line {
+
+    height: 2px;
+
+    position: relative;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(57,243,255,0),
+            var(--cyan),
+            rgba(157,108,255,0.9),
+            var(--cyan),
+            rgba(57,243,255,0)
+        );
+
+    box-shadow:
+        0 0 12px rgba(57,243,255,0.6);
+}
+
+
+.link-line::before,
+.link-line::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    transform: translateY(-50%);
+
+    background: var(--cyan);
+
+    box-shadow:
+        0 0 12px var(--cyan);
+}
+
+
+.link-line::before {
+    left: 0;
+}
+
+
+.link-line::after {
+    right: 0;
+}
+
+
+.particle {
+
+    position: absolute;
+
+    top: 50%;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    box-shadow:
+        0 0 10px white,
+        0 0 20px var(--cyan);
+
+    transform: translateY(-50%);
+
+    animation:
+        travel 2.4s linear infinite;
+}
+
+
+.p1 {
+    animation-delay: 0s;
+}
+
+
+.p2 {
+    animation-delay: 0.8s;
+}
+
+
+.p3 {
+    animation-delay: 1.6s;
+}
+
+
+@keyframes travel {
+
+    from {
+        left: 0;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    to {
+        left: 100%;
+        opacity: 0;
+    }
+}
+
+
+.quantum-states {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 22px;
+
+    margin-top: 16px;
+
+    color: var(--violet);
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 11px;
+
+    text-shadow:
+        0 0 12px rgba(157,108,255,0.5);
+}
+
+
+/* ============================================================
+   EVE
+   ============================================================ */
+
+.eve-interceptor {
+
+    text-align: center;
+
+    position: relative;
+
+    z-index: 5;
+}
+
+
+.eve-ring {
+
+    width: 74px;
+    height: 74px;
+
+    margin:
+        0 auto 12px;
+
+    display: grid;
+
+    place-items: center;
+
+    border:
+        1px dashed rgba(255,61,113,0.55);
+
+    border-radius: 50%;
+
+    position: relative;
+
+    animation:
+        evePulse 2s ease-in-out infinite;
+}
+
+
+.eve-ring::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -7px;
+
+    border:
+        1px solid rgba(255,61,113,0.12);
+
+    border-radius: 50%;
+}
+
+
+.eve-ring::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 4px;
+    height: 4px;
+
+    top: -5px;
+
+    background: var(--red);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 12px var(--red);
+}
+
+
+.eve-core {
+
+    width: 45px;
+    height: 45px;
+
+    display: grid;
+
+    place-items: center;
+
+    border:
+        1px solid var(--red);
+
+    border-radius: 50%;
+
+    color: var(--red);
+
+    background:
+        rgba(255,61,113,0.08);
+
+    font-family: Orbitron, sans-serif;
+
+    font-weight: 700;
+
+    box-shadow:
+        var(--red-glow);
+}
+
+
+.eve-name {
+
+    color: var(--red);
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+}
+
+
+.eve-role {
+
+    color: rgba(255,61,113,0.6);
+
+    font-size: 7px;
+
+    letter-spacing: 1px;
+
+    margin-top: 5px;
+}
+
+
+@keyframes evePulse {
+
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+}
+
+
+/* ============================================================
+   TELEMETRY
+   ============================================================ */
+
+.telemetry-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1.5fr
+        1fr
+        1fr
+        1fr;
+
+    gap: 14px;
+
+    margin-bottom: 18px;
+}
+
+
+.telemetry-card {
+
+    min-height: 150px;
+
+    padding: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8,16,37,0.88),
+            rgba(4,7,18,0.96)
+        );
+
+    border:
+        1px solid var(--border);
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+.telemetry-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    right: -50px;
+    bottom: -70px;
+
+    width: 150px;
+    height: 150px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(57,243,255,0.025);
+
+    filter: blur(25px);
+}
+
+
+.telemetry-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.telemetry-label {
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+    letter-spacing: 1.6px;
+
+    font-family: Orbitron, sans-serif;
+}
+
+
+.telemetry-state {
+
+    color: var(--green);
+
+    font-size: 7px;
+
+    letter-spacing: 1px;
+}
+
+
+.telemetry-icon {
+
+    color: var(--cyan);
+
+    font-size: 17px;
+
+    text-shadow:
+        0 0 12px var(--cyan);
+}
+
+
+.metric-large {
+
+    margin-top: 20px;
+
+    color: var(--white);
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 25px;
+
+    font-weight: 600;
+
+    letter-spacing: 1px;
+}
+
+
+.metric-subtext {
+
+    margin-top: 8px;
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+    letter-spacing: 1px;
+}
+
+
+/* ============================================================
+   QBER
+   ============================================================ */
+
+.qber-scale {
+
+    margin-top: 19px;
+}
+
+
+.qber-track {
+
+    width: 100%;
+    height: 5px;
+
+    background:
+        rgba(255,255,255,0.05);
+
+    overflow: hidden;
+
+    position: relative;
+}
+
+
+.qber-track::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 44%;
+
+    top: 0;
+
+    width: 1px;
+    height: 100%;
+
+    background: var(--yellow);
+
+    box-shadow:
+        0 0 8px var(--yellow);
+}
+
+
+.qber-fill {
+
+    height: 100%;
+
+    min-width: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--green),
+            var(--cyan),
+            var(--violet),
+            var(--red)
+        );
+
+    box-shadow:
+        0 0 10px rgba(57,243,255,0.45);
+
+    transition:
+        width 0.7s ease;
+}
+
+
+.qber-markers {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 8px;
+
+    color: var(--muted);
+
+    font-size: 7px;
+}
+
+
+/* ============================================================
+   OPERATIONS
+   ============================================================ */
+
+.operations-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap: 18px;
+
+    margin-bottom: 18px;
+}
+
+
+.control-panel,
+.message-panel {
+
+    min-height: 370px;
+}
+
+
+/* ============================================================
+   EVE CONTROL
+   ============================================================ */
+
+.eve-control {
+
+    padding: 28px 25px 10px;
+}
+
+
+.control-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    letter-spacing: 1.2px;
+}
+
+
+.control-row strong {
+
+    color: var(--red);
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 20px;
+
+    text-shadow:
+        0 0 15px rgba(255,61,113,0.35);
+}
+
+
+/* ============================================================
+   RANGE SLIDER
+   ============================================================ */
+
+input[type="range"] {
+
+    appearance: none;
+
+    width: 100%;
+
+    height: 4px;
+
+    margin-top: 28px;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--green),
+            var(--yellow),
+            var(--red)
+        );
+
+    cursor: pointer;
+}
+
+
+input[type="range"]::-webkit-slider-thumb {
+
+    appearance: none;
+
+    width: 19px;
+    height: 19px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid var(--white);
+
+    background:
+        var(--red);
+
+    box-shadow:
+        0 0 0 4px rgba(255,61,113,0.12),
+        0 0 18px rgba(255,61,113,0.7);
+
+    transition:
+        transform 0.15s ease;
+}
+
+
+input[type="range"]::-webkit-slider-thumb:hover {
+
+    transform:
+        scale(1.25);
+}
+
+
+input[type="range"]::-moz-range-thumb {
+
+    width: 17px;
+    height: 17px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid var(--white);
+
+    background:
+        var(--red);
+
+    box-shadow:
+        0 0 18px rgba(255,61,113,0.7);
+}
+
+
+.slider-labels {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 12px;
+
+    color: var(--muted);
+
+    font-size: 8px;
+}
+
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.button-row {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap: 12px;
+
+    padding: 22px 25px 25px;
+}
+
+
+button {
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    border: none;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+}
+
+
+button:hover {
+
+    transform:
+        translateY(-2px);
+}
+
+
+button:active {
+
+    transform:
+        translateY(0);
+}
+
+
+.primary-button {
+
+    min-height: 48px;
+
+    color: var(--void);
+
+    background:
+        var(--cyan);
+
+    box-shadow:
+        0 0 20px rgba(57,243,255,0.22);
+}
+
+
+.primary-button:hover {
+
+    box-shadow:
+        0 0 30px rgba(57,243,255,0.5);
+}
+
+
+.danger-button {
+
+    min-height: 48px;
+
+    color: white;
+
+    background:
+        rgba(255,61,113,0.1);
+
+    border:
+        1px solid rgba(255,61,113,0.5);
+
+    box-shadow:
+        0 0 15px rgba(255,61,113,0.06);
+}
+
+
+.danger-button:hover {
+
+    background:
+        rgba(255,61,113,0.18);
+
+    box-shadow:
+        var(--red-glow);
+}
+
+
+/* ============================================================
+   MESSAGE PANEL
+   ============================================================ */
+
+.message-label {
+
+    display: block;
+
+    margin:
+        25px 25px 9px;
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+}
+
+
+textarea {
+
+    display: block;
+
+    width:
+        calc(100% - 50px);
+
+    margin:
+        0 25px;
+
+    min-height: 95px;
+
+    resize: vertical;
+
+    outline: none;
+
+    padding: 15px;
+
+    color: var(--white);
+
+    background:
+        rgba(2,5,15,0.9);
+
+    border:
+        1px solid rgba(57,243,255,0.14);
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+    transition:
+        border 0.2s,
+        box-shadow 0.2s;
+}
+
+
+textarea:focus {
+
+    border-color:
+        rgba(57,243,255,0.55);
+
+    box-shadow:
+        0 0 25px rgba(57,243,255,0.08);
+}
+
+
+textarea::placeholder {
+
+    color:
+        rgba(120,144,173,0.45);
+}
+
+
+.transmit-button {
+
+    width:
+        calc(100% - 50px);
+
+    margin:
+        13px 25px;
+
+    min-height: 44px;
+
+    color: var(--void);
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--cyan),
+            #8df7ff
+        );
+
+    box-shadow:
+        0 0 20px rgba(57,243,255,0.16);
+}
+
+
+.transmit-button:disabled {
+
+    opacity: 0.45;
+
+    cursor: not-allowed;
+}
+
+
+.message-result {
+
+    margin:
+        0 25px 20px;
+
+    padding: 13px;
+
+    background:
+        rgba(2,5,15,0.65);
+
+    border:
+        1px solid rgba(57,243,255,0.08);
+}
+
+
+.message-state {
+
+    color: var(--cyan);
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+}
+
+
+.message-text {
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    line-height: 1.6;
+
+    margin-top: 7px;
+}
+
+
+.message-success {
+
+    color: var(--green);
+
+    line-height: 1.6;
+}
+
+
+.message-success span {
+
+    color: var(--muted);
+
+    font-size: 7px;
+
+    letter-spacing: 1.5px;
+}
+
+
+.message-success code {
+
+    color: var(--cyan);
+
+    font-family: "Courier New", monospace;
+
+    letter-spacing: 1px;
+}
+
+
+/* ============================================================
+   SECURITY STATE
+   ============================================================ */
+
+.security-state {
+
+    min-height: 150px;
+
+    display: grid;
+
+    grid-template-columns:
+        85px
+        1fr
+        auto;
+
+    gap: 25px;
+
+    align-items: center;
+
+    padding: 28px;
+
+    margin-bottom: 18px;
+
+    border-color:
+        rgba(77,255,176,0.18);
+}
+
+
+.security-icon {
+
+    width: 65px;
+    height: 65px;
+
+    display: grid;
+
+    place-items: center;
+
+    border:
+        1px solid var(--green);
+
+    border-radius: 50%;
+
+    color: var(--green);
+
+    font-size: 25px;
+
+    box-shadow:
+        0 0 25px rgba(77,255,176,0.18);
+
+    background:
+        rgba(77,255,176,0.04);
+}
+
+
+.security-copy h2 {
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 22px;
+
+    letter-spacing: 2px;
+
+    color: var(--green);
+}
+
+
+.security-copy p {
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+    margin-top: 7px;
+}
+
+
+.security-meta {
+
+    display: flex;
+
+    gap: 30px;
+}
+
+
+.security-meta div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.security-meta span {
+
+    color: var(--muted);
+
+    font-size: 7px;
+
+    letter-spacing: 1px;
+}
+
+
+.security-meta strong {
+
+    color: var(--text);
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 9px;
+}
+
+
+/* ============================================================
+   EVENT STREAM
+   ============================================================ */
+
+.event-panel {
+
+    margin-bottom: 28px;
+}
+
+
+.event-live {
+
+    color: var(--cyan);
+
+    font-family: Orbitron, sans-serif;
+
+    font-size: 7px;
+
+    letter-spacing: 1.5px;
+
+    padding:
+        7px 10px;
+
+    border:
+        1px solid rgba(57,243,255,0.2);
+
+    background:
+        rgba(57,243,255,0.04);
+}
+
+
+.event-log {
+
+    min-height: 210px;
+
+    max-height: 300px;
+
+    overflow-y: auto;
+
+    padding: 8px 0;
+}
+
+
+.event {
+
+    display: grid;
+
+    grid-template-columns:
+        75px
+        85px
+        1fr;
+
+    gap: 10px;
+
+    padding:
+        10px 24px;
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.025);
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size: 9px;
+
+    transition:
+        background 0.2s;
+}
+
+
+.event:hover {
+
+    background:
+        rgba(57,243,255,0.025);
+}
+
+
+.event-time {
+
+    color:
+        rgba(120,144,173,0.55);
+}
+
+
+.event-type {
+
+    color: var(--cyan);
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+
+.event-message {
+
+    color: var(--text);
+}
+
+
+.event-eve .event-type,
+.event-alert .event-type,
+.event-block .event-type {
+
+    color: var(--red);
+
+    text-shadow:
+        0 0 8px rgba(255,61,113,0.3);
+}
+
+
+.event-security .event-type {
+
+    color: var(--yellow);
+}
+
+
+.event-key .event-type {
+
+    color: var(--violet);
+}
+
+
+.event-delivery .event-type {
+
+    color: var(--green);
+}
+
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+::-webkit-scrollbar {
+
+    width: 5px;
+}
+
+
+::-webkit-scrollbar-track {
+
+    background:
+        rgba(255,255,255,0.02);
+}
+
+
+::-webkit-scrollbar-thumb {
+
+    background:
+        rgba(57,243,255,0.25);
+
+    border-radius: 10px;
+}
+
+
+/* ============================================================
+   SECURITY STATES
+   ============================================================ */
+
+body.state-secure {
+
+    --state: var(--green);
+}
+
+
+body.state-guarded {
+
+    --state: var(--cyan);
+}
+
+
+body.state-high {
+
+    --state: var(--yellow);
+}
+
+
+body.state-critical {
+
+    --state: var(--red);
+}
+
+
+body.state-critical .security-state {
+
+    border-color:
+        rgba(255,61,113,0.42);
+
+    box-shadow:
+        var(--red-glow),
+        var(--shadow);
+}
+
+
+body.state-critical .security-icon {
+
+    color: var(--red);
+
+    border-color: var(--red);
+
+    background:
+        rgba(255,61,113,0.06);
+
+    box-shadow:
+        var(--red-glow);
+}
+
+
+body.state-critical .security-copy h2 {
+
+    color: var(--red);
+
+    text-shadow:
+        0 0 18px rgba(255,61,113,0.35);
+}
+
+
+body.state-critical .eve-ring {
+
+    animation:
+        eveCriticalPulse 0.8s infinite;
+}
+
+
+body.state-critical .link-line {
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--red),
+            transparent
+        );
+
+    box-shadow:
+        0 0 18px rgba(255,61,113,0.75);
+}
+
+
+body.state-critical .node-orbit {
+
+    border-color:
+        rgba(255,61,113,0.3);
+}
+
+
+@keyframes eveCriticalPulse {
+
+    0%, 100% {
+        transform: scale(1);
+        box-shadow:
+            0 0 10px rgba(255,61,113,0.15);
+    }
+
+    50% {
+        transform: scale(1.14);
+        box-shadow:
+            0 0 35px rgba(255,61,113,0.4);
+    }
+}
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.footer {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding:
+        18px 5px 30px;
+
+    color: rgba(120,144,173,0.55);
+
+    font-size: 7px;
+
+    letter-spacing: 1.5px;
+}
+
+
+.footer div:first-child {
+
+    color: var(--cyan);
+
+    font-family: Orbitron, sans-serif;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+    .network {
+
+        grid-template-columns:
+            120px
+            1fr
+            100px
+            120px;
+
+        padding:
+            45px 25px;
+    }
+
+
+    .telemetry-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+}
+
+
+@media (max-width: 800px) {
+
+    .hero {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .protocol-card {
+
+        max-width: 420px;
+    }
+
+
+    .network {
+
+        grid-template-columns: 1fr;
+
+        gap: 35px;
+    }
+
+
+    .quantum-link {
+
+        order: 2;
+    }
+
+
+    .eve-interceptor {
+
+        order: 3;
+    }
+
+
+    .node-bob {
+
+        order: 4;
+    }
+
+
+    .operations-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .security-state {
+
+        grid-template-columns: 70px 1fr;
+    }
+
+
+    .security-meta {
+
+        grid-column: 1 / -1;
+
+        padding-top: 10px;
+    }
+}
+
+
+@media (max-width: 560px) {
+
+    .dashboard {
+
+        width: 92%;
+
+        padding-top: 30px;
+    }
+
+
+    .topbar {
+
+        padding:
+            0 18px;
+    }
+
+
+    .system-status {
+
+        display: none;
+    }
+
+
+    .hero h1 {
+
+        font-size: 32px;
+    }
+
+
+    .telemetry-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .button-row {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .security-meta {
+
+        gap: 18px;
+
+        flex-wrap: wrap;
+    }
+
+
+    .footer {
+
+        flex-direction: column;
+
+        gap: 8px;
+
+        align-items: flex-start;
+    }
+
+
+    .event {
+
+        grid-template-columns:
+            60px
+            65px
+            1fr;
+
+        padding:
+            10px 15px;
+    }
+}
