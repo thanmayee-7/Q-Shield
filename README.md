@@ -13,6 +13,14 @@ Instead of keeping BB84 as a bunch of equations and theory, I wanted to turn it 
 So... meet Q-SHIELD. 🚀
 
 ---
+🚀 Live Demo
+
+** https://q-shield-quantveil.onrender.com**(based on activity)
+
+Try the live BB84 simulation:
+- Set Eve to 0% → secure channel
+- Increase Eve's interception probability → QBER rises
+- Push Eve to 100% → observe the compromised state
 
 ## 🧠 Why I Built This
 
