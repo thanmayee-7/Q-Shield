@@ -15,7 +15,7 @@ So... meet Q-SHIELD. 🚀
 ---
 🚀 Live Demo
 
-** https://q-shield-quantveil.onrender.com**(based on activity)
+** https://q-shield-quantveil.onrender.com **(based on activity)
 
 Try the live BB84 simulation:
 - Set Eve to 0% → secure channel
