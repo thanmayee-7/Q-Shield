@@ -7,24 +7,20 @@ from fastapi.staticfiles import StaticFiles
 from quantum.bb84 import run_bb84
 
 
-# ============================================================
-# PATHS
-# ============================================================
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = BASE_DIR / "frontend"
 
 
-# ============================================================
-# APP
-# ============================================================
-
 app = FastAPI(
     title="Q-SHIELD",
     description="Quantum-Secure Communication & Intrusion Detection",
-    version="2.0.0"
+    version="3.0.0"
 )
 
+
+# ============================================================
+# FRONTEND
+# ============================================================
 
 app.mount(
     "/static",
@@ -32,10 +28,6 @@ app.mount(
     name="static"
 )
 
-
-# ============================================================
-# FRONTEND
-# ============================================================
 
 @app.get("/")
 def serve_frontend():
@@ -56,7 +48,8 @@ def system_status():
         "status": "online",
         "system": "operational",
         "protocol": "BB84",
-        "quantum_security": "active"
+        "quantum_security": "active",
+        "version": "3.0.0"
     }
 
 
@@ -70,29 +63,17 @@ def simulate_qkd(
     probability: float = 0.0
 ):
 
-    # --------------------------------------------------------
-    # IMPORTANT
-    # --------------------------------------------------------
-    # probability is expected as:
-    #
-    # 0.0  = 0%
-    # 0.25 = 25%
-    # 0.50 = 50%
-    # 1.0  = 100%
-    #
-    # We clamp it so invalid values cannot break the system.
-    # --------------------------------------------------------
-
     probability = max(
         0.0,
         min(1.0, probability)
     )
 
-
-    # More qubits gives a more stable demonstration
-    # while still preserving randomness.
     total_qubits = 512
 
+
+    # --------------------------------------------------------
+    # Run existing BB84 engine
+    # --------------------------------------------------------
 
     result = run_bb84(
         length=total_qubits,
@@ -101,14 +82,18 @@ def simulate_qkd(
     )
 
 
+    # --------------------------------------------------------
+    # QBER
+    # --------------------------------------------------------
+
     qber = round(
-        result["qber"],
+        float(result["qber"]),
         2
     )
 
 
     # --------------------------------------------------------
-    # SECURITY POLICY
+    # Threat classification
     # --------------------------------------------------------
 
     if qber <= 3:
@@ -136,43 +121,109 @@ def simulate_qkd(
         channel_status = "BLOCKED"
 
 
+    # --------------------------------------------------------
+    # Security explanation
+    # --------------------------------------------------------
+
+    if qber > 11:
+
+        security_reason = (
+            "QBER exceeded the 11% security threshold. "
+            "The shared key must be rejected because "
+            "the quantum channel may have been compromised."
+        )
+
+    elif qber > 3:
+
+        security_reason = (
+            "Elevated quantum error detected. "
+            "The channel remains usable but requires monitoring."
+        )
+
+    else:
+
+        security_reason = (
+            "Quantum channel integrity verified. "
+            "Observed error remains within the secure operating range."
+        )
+
+
+    # --------------------------------------------------------
+    # Key
+    # --------------------------------------------------------
+
+    sifted_key = result.get(
+        "sifted_alice_key",
+        []
+    )
+
+
+    key_length = len(
+        sifted_key
+    )
+
+
+    key_status = (
+        "ACCEPTED"
+        if result["secure"]
+        else "REJECTED"
+    )
+
+
+    # --------------------------------------------------------
+    # Main response
+    # --------------------------------------------------------
+
     return {
 
-        # Core result
-        "status": result["status"],
-        "secure": result["secure"],
+        "status":
+            result["status"],
 
-        # Quantum telemetry
-        "qber": qber,
-        "key_length": len(
-            result["sifted_alice_key"]
-        ),
+        "secure":
+            result["secure"],
 
-        # Eve telemetry
-        "eve_enabled": result["eve_enabled"],
-        "eve_probability": result["eve_probability"],
-        "eve_percent": round(
-            probability * 100,
-            1
-        ),
-        "eve_attack_count": result[
-            "eve_attack_count"
-        ],
+        "protocol":
+            "BB84",
 
-        # System
-        "total_qubits": total_qubits,
+        "total_qubits":
+            total_qubits,
 
-        # Security interpretation
-        "threat_level": threat_level,
-        "threat_label": threat_label,
-        "channel_status": channel_status,
+        "qber":
+            qber,
 
-        # Policy
-        "policy_threshold": 11.0,
+        "key_length":
+            key_length,
 
-        # Useful dashboard information
         "key_status":
-            "ACCEPTED"
-            if result["secure"]
-            else "REJECTED"
+            key_status,
+
+        "eve_enabled":
+            result["eve_enabled"],
+
+        "eve_probability":
+            result["eve_probability"],
+
+        "eve_percent":
+            round(
+                probability * 100,
+                1
+            ),
+
+        "eve_attack_count":
+            result["eve_attack_count"],
+
+        "threat_level":
+            threat_level,
+
+        "threat_label":
+            threat_label,
+
+        "channel_status":
+            channel_status,
+
+        "policy_threshold":
+            11.0,
+
+        "security_reason":
+            security_reason
     }

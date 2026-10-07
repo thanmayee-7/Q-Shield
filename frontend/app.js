@@ -1,177 +1,840 @@
 // ============================================================
-// Q-SHIELD — QUANTUM SECURITY COMMAND CENTER
-// Frontend Controller
+// Q-SHIELD
+// QUANTUM SECURITY COMMAND CENTER
+// SINGLE FRONTEND CONTROLLER
 // ============================================================
 
 const API_BASE = "";
 
 const state = {
+
     evePercent: 0,
+
     eveProbability: 0,
-    lastSession: null,
-    lastResult: null,
+
+    result: null,
+
+    visualQubits: [],
+
+    currentQubit: 0,
+
+    animationTimer: null,
+
     busy: false,
-    message: "",
+
     eventCounter: 0
+
 };
 
 
-// ============================================================
-// DOM
-// ============================================================
+const $ = id =>
+    document.getElementById(id);
 
-const $ = (id) => document.getElementById(id);
+
+/* ============================================================
+   DOM REFERENCES
+============================================================ */
 
 const ui = {
-    qberValue: $("qberValue"),
-    qberStatus: $("qberStatus"),
-    qberFill: $("qberFill"),
-
-    keyLength: $("keyLength"),
-    keyStatus: $("keyStatus"),
-
-    eveCount: $("eveCount"),
-    eveState: $("eveState"),
-
-    threatLevel: $("threatLevel"),
 
     secureMessage: $("secureMessage"),
-    sendMessageButton: $("sendMessageButton"),
-    messageState: $("messageState"),
-    messageText: $("messageText"),
 
-    generateButton: $("generateButton"),
-    attackButton: $("attackButton"),
+    analyzeMessageButton:
+        $("analyzeMessageButton"),
 
-    eveSlider: $("eveSlider"),
-    eveProbability: $("eveProbability"),
+    sendMessageButton:
+        $("sendMessageButton"),
 
-    securityIcon: $("securityIcon"),
-    securityStatus: $("securityStatus"),
-    securityDescription: $("securityDescription"),
+    messageState:
+        $("messageState"),
 
-    eventLog: $("eventLog")
+    messageChars:
+        $("messageChars"),
+
+    messageBits:
+        $("messageBits"),
+
+    messageOnes:
+        $("messageOnes"),
+
+    messageZeros:
+        $("messageZeros"),
+
+    messageFingerprint:
+        $("messageFingerprint"),
+
+    binaryPreview:
+        $("binaryPreview"),
+
+    binaryCount:
+        $("binaryCount"),
+
+
+    multiMessages:
+        $("multiMessages"),
+
+    analyzeMultipleButton:
+        $("analyzeMultipleButton"),
+
+    multiAnalysisResult:
+        $("multiAnalysisResult"),
+
+
+    eveSlider:
+        $("eveSlider"),
+
+    eveProbability:
+        $("eveProbability"),
+
+    generateButton:
+        $("generateButton"),
+
+    attackButton:
+        $("attackButton"),
+
+
+    qberValue:
+        $("qberValue"),
+
+    qberStatus:
+        $("qberStatus"),
+
+    qberFill:
+        $("qberFill"),
+
+
+    keyLength:
+        $("keyLength"),
+
+    keyStatus:
+        $("keyStatus"),
+
+
+    eveCount:
+        $("eveCount"),
+
+    eveState:
+        $("eveState"),
+
+    threatLevel:
+        $("threatLevel"),
+
+    threatPercentage:
+        $("threatPercentage"),
+
+
+    transmittedCount:
+        $("transmittedCount"),
+
+    interceptedCount:
+        $("interceptedCount"),
+
+    retainedCount:
+        $("retainedCount"),
+
+    currentQubit:
+        $("currentQubit"),
+
+
+    channelStateLabel:
+        $("channelStateLabel"),
+
+    eveNode:
+        $("eveNode"),
+
+    eveNodeStatus:
+        $("eveNodeStatus"),
+
+
+    liveParticle:
+        $("liveParticle"),
+
+    particleLayer:
+        $("particleLayer"),
+
+
+    inspectorIndex:
+        $("inspectorIndex"),
+
+    inspectorAliceBit:
+        $("inspectorAliceBit"),
+
+    inspectorAliceBasis:
+        $("inspectorAliceBasis"),
+
+    inspectorState:
+        $("inspectorState"),
+
+    inspectorEve:
+        $("inspectorEve"),
+
+    inspectorEveBasis:
+        $("inspectorEveBasis"),
+
+    inspectorEveBit:
+        $("inspectorEveBit"),
+
+    inspectorBobBasis:
+        $("inspectorBobBasis"),
+
+    inspectorBobBit:
+        $("inspectorBobBit"),
+
+    inspectorSifted:
+        $("inspectorSifted"),
+
+    inspectorError:
+        $("inspectorError"),
+
+
+    securityIcon:
+        $("securityIcon"),
+
+    securityStatus:
+        $("securityStatus"),
+
+    securityDescription:
+        $("securityDescription"),
+
+    securityChannel:
+        $("securityChannel"),
+
+
+    eventLog:
+        $("eventLog"),
+
+    clearEvents:
+        $("clearEvents")
+
 };
 
 
-// ============================================================
-// HELPERS
-// ============================================================
+/* ============================================================
+   HELPERS
+============================================================ */
 
-function clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
+function clamp(
+    value,
+    min,
+    max
+) {
+
+    return Math.min(
+        Math.max(value, min),
+        max
+    );
+
 }
 
 
 function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+
+    return new Promise(
+        resolve =>
+            setTimeout(resolve, ms)
+    );
+
 }
 
 
-function now() {
-    return new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit"
-    });
+function timeNow() {
+
+    return new Date()
+        .toLocaleTimeString(
+            [],
+            {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            }
+        );
+
 }
 
 
-function formatPercent(value) {
-    return `${Number(value).toFixed(2)}%`;
+function randomBit() {
+
+    return Math.random() < .5
+        ? 0
+        : 1;
+
 }
 
 
-function addEvent(type, message) {
+function randomBasis() {
+
+    return Math.random() < .5
+        ? "+"
+        : "×";
+
+}
+
+
+function encodeState(
+    bit,
+    basis
+) {
+
+    if (basis === "+") {
+
+        return bit === 0
+            ? "|0⟩"
+            : "|1⟩";
+
+    }
+
+    return bit === 0
+        ? "|+⟩"
+        : "|−⟩";
+
+}
+
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+/* ============================================================
+   EVENT STREAM
+============================================================ */
+
+function addEvent(
+    type,
+    message
+) {
+
     if (!ui.eventLog) return;
 
     state.eventCounter++;
 
-    const row = document.createElement("div");
-    row.className = `event event-${type.toLowerCase()}`;
+    const row =
+        document.createElement("div");
+
+    row.className =
+        `event ${type.toLowerCase()}`;
 
     row.innerHTML = `
-        <span class="event-time">${now()}</span>
-        <span class="event-type">${type}</span>
-        <span class="event-message">${message}</span>
+
+        <span class="event-time">
+            ${timeNow()}
+        </span>
+
+        <span class="event-type">
+            ${escapeHTML(type)}
+        </span>
+
+        <span class="event-message">
+            ${escapeHTML(message)}
+        </span>
+
     `;
 
     ui.eventLog.prepend(row);
 
-    // Keep dashboard readable
-    while (ui.eventLog.children.length > 12) {
-        ui.eventLog.removeChild(ui.eventLog.lastChild);
+    while (
+        ui.eventLog.children.length > 20
+    ) {
+
+        ui.eventLog.removeChild(
+            ui.eventLog.lastChild
+        );
+
     }
+
 }
 
 
-// ============================================================
-// SECURITY CLASSIFICATION
-// ============================================================
+/* ============================================================
+   MESSAGE → BINARY
+============================================================ */
 
-function classifySecurity(qber, evePercent) {
+function textToBinary(text) {
+
+    const bytes =
+        new TextEncoder().encode(text);
+
+    return Array.from(bytes)
+        .map(
+            byte =>
+                byte
+                    .toString(2)
+                    .padStart(8, "0")
+        )
+        .join("");
+
+}
+
+
+async function fingerprint(text) {
+
+    if (
+        !window.crypto ||
+        !window.crypto.subtle
+    ) {
+
+        return "LOCAL-HASH-UNAVAILABLE";
+
+    }
+
+    const bytes =
+        new TextEncoder().encode(text);
+
+    const hash =
+        await crypto.subtle.digest(
+            "SHA-256",
+            bytes
+        );
+
+    return Array.from(
+        new Uint8Array(hash)
+    )
+        .map(
+            byte =>
+                byte
+                    .toString(16)
+                    .padStart(2, "0")
+        )
+        .join("")
+        .toUpperCase();
+
+}
+
+
+/* ============================================================
+   MESSAGE ANALYSIS
+============================================================ */
+
+async function analyzeMessage() {
+
+    const message =
+        ui.secureMessage.value;
+
+    if (!message.trim()) {
+
+        ui.messageState.textContent =
+            "ENTER A MESSAGE";
+
+        return;
+
+    }
+
+    const binary =
+        textToBinary(message);
+
+    const ones =
+        [...binary]
+            .filter(bit => bit === "1")
+            .length;
+
+    const zeros =
+        binary.length - ones;
+
+    const hash =
+        await fingerprint(message);
+
+    ui.messageChars.textContent =
+        message.length;
+
+    ui.messageBits.textContent =
+        binary.length;
+
+    ui.messageOnes.textContent =
+        ones;
+
+    ui.messageZeros.textContent =
+        zeros;
+
+    ui.messageFingerprint.textContent =
+        hash.substring(0, 32);
+
+    ui.binaryCount.textContent =
+        `${binary.length} BITS`;
+
+    ui.binaryPreview.textContent =
+        binary.length > 128
+            ? `${binary.substring(0, 128)} …`
+            : binary;
+
+    ui.messageState.textContent =
+        "MESSAGE ANALYZED";
+
+    addEvent(
+        "ANALYSIS",
+        `Payload analyzed — ${message.length} characters / ${binary.length} bits`
+    );
+
+}
+
+
+/* ============================================================
+   MULTIPLE MESSAGE ANALYSIS
+============================================================ */
+
+async function analyzeMultipleMessages() {
+
+    const raw =
+        ui.multiMessages.value.trim();
+
+    if (!raw) {
+
+        ui.multiAnalysisResult.innerHTML = `
+            <div class="empty-analysis">
+                Please enter at least one message.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    const messages =
+        raw
+            .split(/\r?\n/)
+            .map(message => message.trim())
+            .filter(Boolean);
+
+    ui.multiAnalysisResult.innerHTML = "";
+
+    for (
+        let index = 0;
+        index < messages.length;
+        index++
+    ) {
+
+        const message =
+            messages[index];
+
+        const binary =
+            textToBinary(message);
+
+        const hash =
+            await fingerprint(message);
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "message-analysis-row";
+
+        row.innerHTML = `
+
+            <div class="number">
+                ${index + 1}
+            </div>
+
+            <div class="payload">
+                ${escapeHTML(message)}
+            </div>
+
+            <div class="small-value">
+                ${message.length} chars
+            </div>
+
+            <div class="small-value">
+                ${binary.length} bits
+            </div>
+
+            <code>
+                ${hash.substring(0, 24)}
+            </code>
+
+        `;
+
+        ui.multiAnalysisResult.appendChild(row);
+
+    }
+
+    addEvent(
+        "ANALYSIS",
+        `${messages.length} infrastructure messages analyzed`
+    );
+
+}
+
+
+/* ============================================================
+   SLIDER
+============================================================ */
+
+function updateSlider() {
+
+    const percent =
+        clamp(
+            Number(ui.eveSlider.value),
+            0,
+            100
+        );
+
+    state.evePercent =
+        percent;
+
+    state.eveProbability =
+        percent / 100;
+
+    ui.eveProbability.textContent =
+        `${percent}%`;
+
+    ui.threatPercentage.textContent =
+        `${percent}% EXPOSURE`;
+
+}
+
+
+function setEvePercentage(percent) {
+
+    percent =
+        clamp(
+            Number(percent),
+            0,
+            100
+        );
+
+    ui.eveSlider.value =
+        percent;
+
+    updateSlider();
+
+}
+
+
+/* ============================================================
+   BACKEND REQUEST
+============================================================ */
+
+async function requestSimulation(
+    eveEnabled,
+    probability
+) {
+
+    const safeProbability =
+        clamp(
+            Number(probability),
+            0,
+            1
+        );
+
+    const url =
+        `${API_BASE}/api/qkd/simulate` +
+        `?eve=${eveEnabled}` +
+        `&probability=${safeProbability}`;
+
+    const response =
+        await fetch(
+            url,
+            {
+                method: "GET",
+                cache: "no-store"
+            }
+        );
+
+    if (!response.ok) {
+
+        throw new Error(
+            `Backend returned HTTP ${response.status}`
+        );
+
+    }
+
+    return await response.json();
+
+}
+
+
+/* ============================================================
+   VISUAL QUBIT GENERATOR
+============================================================ */
+
+function createVisualQubits(
+    count,
+    eveProbability,
+    backendQber = null
+) {
+
+    const qubits = [];
+
+    for (
+        let i = 0;
+        i < count;
+        i++
+    ) {
+
+        const aliceBit =
+            randomBit();
+
+        const aliceBasis =
+            randomBasis();
+
+        const bobBasis =
+            randomBasis();
+
+        const intercepted =
+            Math.random() <
+            eveProbability;
+
+        let eveBasis = null;
+        let eveBit = null;
+        let bobBit = aliceBit;
+
+        if (intercepted) {
+
+            eveBasis =
+                randomBasis();
+
+            eveBit =
+                eveBasis === aliceBasis
+                    ? aliceBit
+                    : randomBit();
+
+            bobBit =
+                bobBasis === eveBasis
+                    ? eveBit
+                    : randomBit();
+
+        }
+
+        const sifted =
+            aliceBasis === bobBasis;
+
+        const error =
+            sifted &&
+            aliceBit !== bobBit;
+
+        qubits.push({
+
+            index: i + 1,
+
+            aliceBit,
+
+            aliceBasis,
+
+            encodedState:
+                encodeState(
+                    aliceBit,
+                    aliceBasis
+                ),
+
+            eveIntercepted:
+                intercepted,
+
+            eveBasis,
+
+            eveBit,
+
+            eveState:
+                eveBit === null
+                    ? null
+                    : encodeState(
+                        eveBit,
+                        eveBasis
+                    ),
+
+            bobBasis,
+
+            bobBit,
+
+            sifted,
+
+            error
+
+        });
+
+    }
 
     /*
-        Prototype policy:
-
-        0–3%      → SECURE
-        >3–8%     → GUARDED
-        >8–11%    → HIGH
-        >11%      → CRITICAL
-
-        11% is the prototype's configured policy threshold.
-        It is NOT a universal real-world QKD threshold.
+        If the backend supplies actual detailed
+        QBER, the dashboard uses that QBER.
+        The qubit animation remains a visual
+        representation of the live BB84 flow.
     */
 
+    return qubits;
+
+}
+
+
+/* ============================================================
+   SECURITY CLASSIFICATION
+============================================================ */
+
+function classifySecurity(qber) {
+
     if (qber <= 3) {
+
         return {
             level: "LOW",
             label: "SECURE",
-            description: "Quantum channel integrity verified.",
+            description:
+                "Quantum channel integrity verified.",
             icon: "✓",
-            accepted: true,
-            colorClass: "secure"
+            className: "state-secure"
         };
+
     }
 
     if (qber <= 8) {
+
         return {
             level: "GUARDED",
             label: "MONITOR",
-            description: "Elevated quantum error detected.",
+            description:
+                "Elevated quantum error detected. Channel remains usable.",
             icon: "◐",
-            accepted: true,
-            colorClass: "guarded"
+            className: "state-guarded"
         };
+
     }
 
     if (qber <= 11) {
+
         return {
             level: "HIGH",
             label: "HIGH RISK",
-            description: "QBER approaching security policy limit.",
+            description:
+                "QBER is approaching the 11% security policy threshold.",
             icon: "!",
-            accepted: true,
-            colorClass: "high"
+            className: "state-high"
         };
+
     }
 
     return {
+
         level: "CRITICAL",
+
         label: "COMPROMISED",
-        description: "QBER exceeds policy. Quantum key rejected.",
+
+        description:
+            "QBER exceeded the 11% policy threshold. Quantum key rejected.",
+
         icon: "×",
-        accepted: false,
-        colorClass: "critical"
+
+        className: "state-critical"
+
     };
+
 }
 
 
-// ============================================================
-// VISUAL STATE
-// ============================================================
+/* ============================================================
+   UPDATE DASHBOARD
+============================================================ */
 
-function setSecurityVisuals(security, result) {
+function updateDashboard(result) {
+
+    const qber =
+        Number(result.qber || 0);
+
+    const security =
+        classifySecurity(qber);
+
 
     document.body.classList.remove(
         "state-secure",
@@ -181,262 +844,546 @@ function setSecurityVisuals(security, result) {
     );
 
     document.body.classList.add(
-        `state-${security.colorClass}`
+        security.className
     );
 
 
-    // Security card
-    if (ui.securityIcon) {
-        ui.securityIcon.textContent = security.icon;
-    }
+    /* QBER */
 
-    if (ui.securityStatus) {
-        ui.securityStatus.textContent = security.label;
-    }
+    ui.qberValue.textContent =
+        `${qber.toFixed(2)}%`;
 
-    if (ui.securityDescription) {
-        ui.securityDescription.textContent =
-            security.description;
-    }
-
-
-    // Threat level
-    if (ui.threatLevel) {
-        ui.threatLevel.textContent = security.level;
-    }
-
-
-    // QBER
-    if (ui.qberValue) {
-        ui.qberValue.textContent =
-            formatPercent(result.qber);
-    }
-
-    if (ui.qberStatus) {
-        ui.qberStatus.textContent =
-            result.qber > 11
-                ? "ABOVE POLICY"
-                : result.qber > 8
-                    ? "APPROACHING POLICY"
-                    : "WITHIN POLICY";
-    }
-
-    if (ui.qberFill) {
-        const qberWidth = clamp(
-            (result.qber / 25) * 100,
+    ui.qberFill.style.width =
+        `${clamp(
+            (qber / 25) * 100,
             0,
             100
+        )}%`;
+
+    ui.qberStatus.textContent =
+        qber > 11
+            ? "ABOVE POLICY"
+            : qber > 8
+                ? "APPROACHING POLICY"
+                : "WITHIN POLICY";
+
+
+    /* KEY */
+
+    const keyLength =
+        Number(
+            result.key_length || 0
         );
 
-        ui.qberFill.style.width = `${qberWidth}%`;
+    ui.keyLength.textContent =
+        `${keyLength} BITS`;
+
+    ui.keyStatus.textContent =
+        result.secure
+            ? "ACCEPTED"
+            : "REJECTED";
+
+
+    /* EVE */
+
+    const eveCount =
+        Number(
+            result.eve_attack_count || 0
+        );
+
+    ui.eveCount.textContent =
+        `${eveCount} STATES`;
+
+    ui.eveState.textContent =
+        eveCount > 0
+            ? "DETECTED"
+            : "INACTIVE";
+
+
+    /* THREAT */
+
+    ui.threatLevel.textContent =
+        security.level;
+
+    ui.threatPercentage.textContent =
+        `${state.evePercent}% EXPOSURE`;
+
+
+    /* NETWORK */
+
+    ui.transmittedCount.textContent =
+        result.total_qubits ||
+        result.transmitted ||
+        512;
+
+    ui.interceptedCount.textContent =
+        eveCount;
+
+    ui.retainedCount.textContent =
+        result.key_length || 0;
+
+
+    /* CHANNEL */
+
+    if (qber > 11) {
+
+        ui.channelStateLabel.textContent =
+            "CHANNEL COMPROMISED";
+
+        ui.channelStateLabel.className =
+            "channel-status";
+
+        ui.eveNodeStatus.textContent =
+            "INTERCEPTION DETECTED";
+
+    }
+    else if (eveCount > 0) {
+
+        ui.channelStateLabel.textContent =
+            "MONITORING";
+
+        ui.channelStateLabel.className =
+            "channel-status";
+
+        ui.eveNodeStatus.textContent =
+            "ACTIVE";
+
+    }
+    else {
+
+        ui.channelStateLabel.textContent =
+            "CHANNEL SECURE";
+
+        ui.channelStateLabel.className =
+            "channel-status";
+
+        ui.eveNodeStatus.textContent =
+            "INACTIVE";
+
     }
 
 
-    // Key
-    if (ui.keyLength) {
-        ui.keyLength.textContent =
-            `${result.key_length} BITS`;
+    /* SECURITY */
+
+    ui.securityIcon.textContent =
+        security.icon;
+
+    ui.securityStatus.textContent =
+        security.label;
+
+    ui.securityDescription.textContent =
+        security.description;
+
+    ui.securityChannel.textContent =
+        qber > 11
+            ? "BLOCKED"
+            : "ACTIVE";
+
+
+    /* MESSAGE */
+
+    if (result.secure) {
+
+        ui.sendMessageButton.disabled =
+            false;
+
+        ui.sendMessageButton.textContent =
+            "ENCRYPT & TRANSMIT";
+
+    }
+    else {
+
+        ui.sendMessageButton.disabled =
+            false;
+
+        ui.sendMessageButton.textContent =
+            "ATTEMPT TRANSMISSION";
+
     }
 
-    if (ui.keyStatus) {
-        ui.keyStatus.textContent =
-            result.secure
-                ? "ACCEPTED"
-                : "REJECTED";
-    }
-
-
-    // Eve
-    if (ui.eveCount) {
-        ui.eveCount.textContent =
-            `${result.eve_attack_count} STATES`;
-    }
-
-    if (ui.eveState) {
-        ui.eveState.textContent =
-            result.eve_attack_count > 0
-                ? "DETECTED"
-                : "INACTIVE";
-    }
 }
 
 
-// ============================================================
-// EVE SLIDER
-// ============================================================
+/* ============================================================
+   PARTICLES
+============================================================ */
 
-function updateSliderDisplay() {
+function createParticles() {
 
-    if (!ui.eveSlider) return;
+    ui.particleLayer.innerHTML = "";
 
-    const percent = Number(ui.eveSlider.value);
+    for (
+        let i = 0;
+        i < 12;
+        i++
+    ) {
 
-    state.evePercent = clamp(percent, 0, 100);
+        const particle =
+            document.createElement("div");
 
-    // IMPORTANT:
-    // Slider = percentage
-    // API = decimal probability
-    //
-    // 0   → 0.00
-    // 25  → 0.25
-    // 50  → 0.50
-    // 100 → 1.00
+        particle.className =
+            "particle";
 
-    state.eveProbability =
-        state.evePercent / 100;
+        particle.style.animationDelay =
+            `${-(i * .19)}s`;
 
+        ui.particleLayer.appendChild(
+            particle
+        );
 
-    if (ui.eveProbability) {
-        ui.eveProbability.textContent =
-            `${state.evePercent}%`;
     }
+
 }
 
 
-async function handleSliderChange() {
-    updateSliderDisplay();
+function updateParticleAttackState() {
 
-    await runSimulation(
-        state.evePercent > 0,
-        state.eveProbability
+    const attack =
+        state.evePercent > 0;
+
+    const particles =
+        ui.particleLayer
+            .querySelectorAll(".particle");
+
+    particles.forEach(
+        particle => {
+
+            particle.classList.toggle(
+                "attack",
+                attack
+            );
+
+        }
     );
+
 }
 
 
-// ============================================================
-// API
-// ============================================================
+/* ============================================================
+   LIVE QUBIT INSPECTOR
+============================================================ */
 
-async function requestSimulation(
+function updateInspector(qubit) {
+
+    if (!qubit) return;
+
+
+    ui.inspectorIndex.textContent =
+        qubit.index;
+
+    ui.currentQubit.textContent =
+        qubit.index;
+
+
+    ui.inspectorAliceBit.textContent =
+        qubit.aliceBit;
+
+    ui.inspectorAliceBasis.textContent =
+        qubit.aliceBasis;
+
+    ui.inspectorState.textContent =
+        qubit.encodedState;
+
+
+    ui.inspectorEve.textContent =
+        qubit.eveIntercepted
+            ? "INTERCEPTED"
+            : "CLEAR";
+
+    ui.inspectorEveBasis.textContent =
+        qubit.eveBasis || "—";
+
+    ui.inspectorEveBit.textContent =
+        qubit.eveBit === null ||
+        qubit.eveBit === undefined
+            ? "—"
+            : qubit.eveBit;
+
+
+    ui.inspectorBobBasis.textContent =
+        qubit.bobBasis;
+
+    ui.inspectorBobBit.textContent =
+        qubit.bobBit;
+
+
+    ui.inspectorSifted.textContent =
+        qubit.sifted
+            ? "YES"
+            : "NO";
+
+
+    ui.inspectorError.textContent =
+        qubit.error
+            ? "ERROR"
+            : "MATCH";
+
+
+    ui.inspectorEve.className =
+        qubit.eveIntercepted
+            ? "error"
+            : "good";
+
+    ui.inspectorError.className =
+        qubit.error
+            ? "error"
+            : "good";
+
+
+    /*
+        Move the live particle.
+        This makes the changing transmission
+        physically visible.
+    */
+
+    const progress =
+        (qubit.index % 100) / 100;
+
+    ui.liveParticle.style.left =
+        `${8 + progress * 84}%`;
+
+    if (qubit.eveIntercepted) {
+
+        ui.liveParticle.style.top =
+            "15%";
+
+        ui.liveParticle.style.background =
+            "var(--red)";
+
+        ui.liveParticle.style.boxShadow =
+            "0 0 15px var(--red), 0 0 30px var(--red)";
+
+    }
+    else {
+
+        ui.liveParticle.style.top =
+            "calc(50% - 6px)";
+
+        ui.liveParticle.style.background =
+            "white";
+
+        ui.liveParticle.style.boxShadow =
+            "0 0 12px white, 0 0 28px var(--cyan)";
+
+    }
+
+}
+
+
+/* ============================================================
+   LIVE TRANSMISSION LOOP
+============================================================ */
+
+function startQubitAnimation() {
+
+    if (
+        state.animationTimer
+    ) {
+
+        clearInterval(
+            state.animationTimer
+        );
+
+    }
+
+
+    if (
+        !state.visualQubits.length
+    ) return;
+
+
+    state.currentQubit = 0;
+
+
+    state.animationTimer =
+        setInterval(
+            () => {
+
+                const qubit =
+                    state.visualQubits[
+                        state.currentQubit
+                    ];
+
+                updateInspector(qubit);
+
+
+                /*
+                    This makes the displayed numbers
+                    visibly change instead of only
+                    updating after the simulation ends.
+                */
+
+                ui.transmittedCount.textContent =
+                    qubit.index;
+
+
+                if (
+                    qubit.eveIntercepted
+                ) {
+
+                    ui.interceptedCount.textContent =
+                        Math.min(
+                            state.visualQubits
+                                .slice(
+                                    0,
+                                    state.currentQubit + 1
+                                )
+                                .filter(
+                                    q =>
+                                        q.eveIntercepted
+                                )
+                                .length,
+                            state.visualQubits.length
+                        );
+
+                }
+
+
+                state.currentQubit++;
+
+                if (
+                    state.currentQubit >=
+                    state.visualQubits.length
+                ) {
+
+                    state.currentQubit = 0;
+
+                }
+
+            },
+            180
+        );
+
+}
+
+
+/* ============================================================
+   SIMULATION
+============================================================ */
+
+async function runSimulation(
     eveEnabled,
     probability
 ) {
 
-    /*
-        NEVER send the slider's raw percentage.
+    if (state.busy) {
 
-        Wrong:
-        probability=50
-
-        Correct:
-        probability=0.5
-    */
-
-    const safeProbability = clamp(
-        Number(probability),
-        0,
-        1
-    );
-
-    const url =
-        `${API_BASE}/api/qkd/simulate` +
-        `?eve=${eveEnabled}` +
-        `&probability=${safeProbability}`;
-
-    const response = await fetch(url, {
-        method: "GET",
-        cache: "no-store"
-    });
-
-    if (!response.ok) {
-        throw new Error(
-            `Simulation failed: HTTP ${response.status}`
+        addEvent(
+            "SYSTEM",
+            "Simulation already running..."
         );
+
+        return;
+
     }
 
-    return await response.json();
-}
-
-
-// ============================================================
-// MAIN SIMULATION
-// ============================================================
-
-async function runSimulation(
-    eveEnabled = false,
-    probability = 0
-) {
-
-    if (state.busy) return;
 
     state.busy = true;
 
+
     try {
 
-        if (eveEnabled) {
+        addEvent(
+            eveEnabled
+                ? "EVE"
+                : "SYSTEM",
 
-            addEvent(
-                "EVE",
-                `Intercept/resend simulation initiated — ${Math.round(probability * 100)}% exposure`
+            eveEnabled
+                ? `Eve interception set to ${Math.round(probability * 100)}%`
+                : "Clean BB84 session initialized"
+        );
+
+
+        /*
+            Show visual activity immediately.
+        */
+
+        state.visualQubits =
+            createVisualQubits(
+                128,
+                probability
             );
 
-        } else {
+        updateParticleAttackState();
 
-            addEvent(
-                "SYSTEM",
-                "Clean BB84 quantum session initialized"
-            );
-        }
-
-
-        await sleep(150);
+        startQubitAnimation();
 
 
         addEvent(
             "QUANTUM",
-            "Quantum states transmitted from Alice to Bob"
+            "Alice is preparing quantum states..."
         );
 
 
-        const result = await requestSimulation(
-            eveEnabled,
-            probability
+        await sleep(350);
+
+
+        addEvent(
+            "QUANTUM",
+            "Quantum states entering channel..."
         );
 
 
-        state.lastResult = result;
+        const result =
+            await requestSimulation(
+                eveEnabled,
+                probability
+            );
 
 
-        // Security classification
-        const security = classifySecurity(
-            result.qber,
-            Math.round(probability * 100)
-        );
+        state.result =
+            result;
 
 
-        setSecurityVisuals(
-            security,
+        /*
+            Keep the requested percentage
+            visible even if backend returns
+            a slightly different attack count.
+        */
+
+        state.evePercent =
+            Math.round(
+                probability * 100
+            );
+
+
+        updateDashboard(
             result
         );
 
 
-        // ====================================================
-        // EVENTS
-        // ====================================================
-
         addEvent(
             "ANALYSIS",
-            `QBER measured at ${formatPercent(result.qber)}`
+            `QBER measured at ${Number(result.qber || 0).toFixed(2)}%`
         );
 
 
-        if (result.eve_attack_count > 0) {
+        if (
+            Number(result.eve_attack_count || 0) > 0
+        ) {
 
             addEvent(
                 "EVE",
                 `${result.eve_attack_count} quantum states intercepted`
             );
 
-        } else {
+        }
+        else {
 
             addEvent(
                 "QUANTUM",
-                "No interception detected"
+                "No quantum-state interception detected"
             );
+
         }
 
 
-        if (result.qber > 11) {
+        await sleep(250);
+
+
+        if (
+            Number(result.qber || 0) > 11
+        ) {
 
             addEvent(
                 "SECURITY",
@@ -448,54 +1395,45 @@ async function runSimulation(
                 "SIFTED KEY REJECTED"
             );
 
-        } else {
+        }
+        else {
 
             addEvent(
                 "KEY",
-                `Quantum key accepted — ${result.key_length} usable bits`
+                `Quantum key accepted — ${result.key_length || 0} usable bits`
             );
+
         }
 
 
-        // ====================================================
-        // CHANNEL STATUS
-        // ====================================================
+        /*
+            Restore full transmitted count after
+            the live animation has demonstrated
+            changing values.
+        */
 
-        if (security.level === "LOW") {
+        setTimeout(
+            () => {
 
-            addEvent(
-                "CHANNEL",
-                "Quantum channel operating normally"
-            );
+                ui.transmittedCount.textContent =
+                    result.total_qubits ||
+                    512;
 
-        } else if (security.level === "GUARDED") {
+                ui.interceptedCount.textContent =
+                    result.eve_attack_count ||
+                    0;
 
-            addEvent(
-                "CHANNEL",
-                "Elevated noise/interception — monitoring"
-            );
+                ui.retainedCount.textContent =
+                    result.key_length ||
+                    0;
 
-        } else if (security.level === "HIGH") {
-
-            addEvent(
-                "CHANNEL",
-                "High-risk quantum channel detected"
-            );
-
-        } else {
-
-            addEvent(
-                "CHANNEL",
-                "CRITICAL — transmission protection engaged"
-            );
-        }
+            },
+            1800
+        );
 
 
-        // Update message state
-        updateMessageAvailability(result);
-
-
-    } catch (error) {
+    }
+    catch (error) {
 
         console.error(error);
 
@@ -504,375 +1442,405 @@ async function runSimulation(
             error.message
         );
 
-    } finally {
+    }
+    finally {
 
         state.busy = false;
+
     }
+
 }
 
 
-// ============================================================
-// MESSAGE SECURITY
-// ============================================================
-
-function updateMessageAvailability(result) {
-
-    if (!ui.sendMessageButton) return;
-
-    if (result.secure) {
-
-        ui.sendMessageButton.disabled = false;
-
-        ui.sendMessageButton.textContent =
-            "ENCRYPT & TRANSMIT";
-
-    } else {
-
-        ui.sendMessageButton.disabled = false;
-
-        ui.sendMessageButton.textContent =
-            "ATTEMPT TRANSMISSION";
-    }
-}
-
-
-// ============================================================
-// MESSAGE FINGERPRINT
-// ============================================================
-
-async function createMessageFingerprint(message) {
-
-    const data =
-        new TextEncoder().encode(message);
-
-    const hash =
-        await crypto.subtle.digest(
-            "SHA-256",
-            data
-        );
-
-    return Array.from(
-        new Uint8Array(hash)
-    )
-        .map(byte =>
-            byte.toString(16).padStart(2, "0")
-        )
-        .join("")
-        .substring(0, 16)
-        .toUpperCase();
-}
-
-
-// ============================================================
-// MESSAGE TRANSMISSION
-// ============================================================
-
-async function transmitMessage() {
-
-    const message =
-        ui.secureMessage?.value.trim();
-
-
-    if (!message) {
-
-        if (ui.messageState) {
-            ui.messageState.textContent =
-                "ENTER A MESSAGE";
-        }
-
-        if (ui.messageText) {
-            ui.messageText.textContent =
-                "No payload entered.";
-        }
-
-        return;
-    }
-
-
-    const result = state.lastResult;
-
-
-    if (!result) {
-
-        if (ui.messageState) {
-            ui.messageState.textContent =
-                "NO ACTIVE SESSION";
-        }
-
-        return;
-    }
-
-
-    // ========================================================
-    // COMPROMISED CHANNEL
-    // ========================================================
-
-    if (!result.secure) {
-
-        if (ui.messageState) {
-            ui.messageState.textContent =
-                "TRANSMISSION BLOCKED";
-        }
-
-        if (ui.messageText) {
-            ui.messageText.textContent =
-                "Quantum key rejected — secure channel unavailable.";
-        }
-
-
-        addEvent(
-            "BLOCK",
-            "Sensitive message BLOCKED because quantum key was rejected"
-        );
-
-        return;
-    }
-
-
-    // ========================================================
-    // SECURE CHANNEL
-    // ========================================================
-
-    if (ui.sendMessageButton) {
-        ui.sendMessageButton.disabled = true;
-        ui.sendMessageButton.textContent =
-            "ENCRYPTING...";
-    }
-
-
-    if (ui.messageState) {
-        ui.messageState.textContent =
-            "ENCRYPTING PAYLOAD...";
-    }
-
-
-    addEvent(
-        "CRYPTO",
-        "Sensitive payload submitted for protected transmission"
-    );
-
-
-    await sleep(600);
-
-
-    const fingerprint =
-        await createMessageFingerprint(message);
-
-
-    if (ui.messageState) {
-        ui.messageState.textContent =
-            "TRANSMISSION DELIVERED";
-    }
-
-
-    if (ui.messageText) {
-
-        ui.messageText.innerHTML = `
-            <div class="message-success">
-                <strong>✓ SECURE TRANSMISSION</strong>
-                <br><br>
-                Payload authenticated through active quantum session.
-                <br><br>
-                <span>MESSAGE FINGERPRINT</span>
-                <br>
-                <code>${fingerprint}</code>
-                <br><br>
-                <span>CHANNEL</span>
-                <br>
-                Q-SHIELD / BB84
-            </div>
-        `;
-    }
-
-
-    addEvent(
-        "DELIVERY",
-        `Protected message delivered — fingerprint ${fingerprint}`
-    );
-
-
-    if (ui.sendMessageButton) {
-        ui.sendMessageButton.disabled = false;
-        ui.sendMessageButton.textContent =
-            "ENCRYPT & TRANSMIT";
-    }
-}
-
-
-// ============================================================
-// GENERATE SECURE KEY
-// ============================================================
+/* ============================================================
+   SECURE KEY
+============================================================ */
 
 async function generateSecureKey() {
 
-    if (ui.eveSlider) {
-        ui.eveSlider.value = 0;
-    }
-
-    state.evePercent = 0;
-    state.eveProbability = 0;
-
-    if (ui.eveProbability) {
-        ui.eveProbability.textContent = "0%";
-    }
-
+    setEvePercentage(0);
 
     addEvent(
         "SYSTEM",
-        "Generating clean quantum session..."
+        "Generating clean quantum key..."
     );
-
 
     await runSimulation(
         false,
         0
     );
+
 }
 
 
-// ============================================================
-// SIMULATE ATTACK
-// ============================================================
+/* ============================================================
+   ATTACK
+============================================================ */
 
 async function simulateAttack() {
 
-    if (ui.eveSlider) {
+    let percent =
+        Number(
+            ui.eveSlider.value
+        );
 
-        /*
-            If the slider is currently 0,
-            automatically move to a useful demo attack.
 
-            This makes the button judge-friendly.
-        */
+    /*
+        Judge-friendly:
+        if slider is zero, attack button
+        automatically demonstrates full attack.
+    */
 
-        if (Number(ui.eveSlider.value) === 0) {
-            ui.eveSlider.value = 100;
-        }
+    if (percent === 0) {
+
+        percent = 100;
+
+        setEvePercentage(
+            percent
+        );
+
     }
-
-
-    updateSliderDisplay();
 
 
     addEvent(
         "ALERT",
-        `Attack scenario selected — Eve exposure ${state.evePercent}%`
+        `Attack scenario launched — Eve exposure ${percent}%`
     );
 
 
     await runSimulation(
         true,
-        state.eveProbability
+        percent / 100
     );
+
 }
 
 
-// ============================================================
-// LIVE SLIDER EVENTS
-// ============================================================
+/* ============================================================
+   MESSAGE TRANSMISSION
+============================================================ */
 
-if (ui.eveSlider) {
+async function transmitMessage() {
 
-    ui.eveSlider.addEventListener(
-        "input",
-        updateSliderDisplay
+    const message =
+        ui.secureMessage.value.trim();
+
+
+    if (!message) {
+
+        ui.messageState.textContent =
+            "ENTER A MESSAGE";
+
+        return;
+
+    }
+
+
+    /*
+        Always analyze first.
+    */
+
+    await analyzeMessage();
+
+
+    const result =
+        state.result;
+
+
+    if (!result) {
+
+        ui.messageState.textContent =
+            "RUN A QUANTUM SESSION FIRST";
+
+        return;
+
+    }
+
+
+    if (!result.secure) {
+
+        ui.messageState.textContent =
+            "TRANSMISSION BLOCKED";
+
+        addEvent(
+            "BLOCK",
+            "Sensitive payload blocked — quantum key rejected"
+        );
+
+        return;
+
+    }
+
+
+    ui.sendMessageButton.disabled =
+        true;
+
+    ui.sendMessageButton.textContent =
+        "ENCRYPTING...";
+
+
+    ui.messageState.textContent =
+        "ENCRYPTING PAYLOAD...";
+
+
+    addEvent(
+        "CRYPTO",
+        "Critical infrastructure payload submitted"
     );
 
 
-    ui.eveSlider.addEventListener(
-        "change",
-        handleSliderChange
+    await sleep(700);
+
+
+    const hash =
+        await fingerprint(message);
+
+
+    ui.messageState.textContent =
+        "TRANSMISSION DELIVERED";
+
+
+    addEvent(
+        "DELIVERY",
+        `Secure message delivered — fingerprint ${hash.substring(0, 16)}`
     );
+
+
+    ui.sendMessageButton.disabled =
+        false;
+
+    ui.sendMessageButton.textContent =
+        "ENCRYPT & TRANSMIT";
+
 }
 
 
-// ============================================================
-// BUTTONS
-// ============================================================
+/* ============================================================
+   EVENTS
+============================================================ */
 
-if (ui.generateButton) {
+ui.eveSlider.addEventListener(
+    "input",
+    () => {
 
-    ui.generateButton.addEventListener(
-        "click",
-        generateSecureKey
-    );
-}
+        updateSlider();
 
+        updateParticleAttackState();
 
-if (ui.attackButton) {
-
-    ui.attackButton.addEventListener(
-        "click",
-        simulateAttack
-    );
-}
+    }
+);
 
 
-if (ui.sendMessageButton) {
+ui.eveSlider.addEventListener(
+    "change",
+    async () => {
 
-    ui.sendMessageButton.addEventListener(
-        "click",
-        transmitMessage
-    );
-}
+        /*
+            Slider itself now immediately changes
+            the visible percentage.
+
+            On release, actually run the selected
+            quantum attack scenario.
+        */
+
+        const percent =
+            Number(
+                ui.eveSlider.value
+            );
+
+        await runSimulation(
+            percent > 0,
+            percent / 100
+        );
+
+    }
+);
 
 
-// ============================================================
-// MESSAGE PREVIEW
-// ============================================================
+document
+    .querySelectorAll(
+        ".preset-button"
+    )
+    .forEach(
+        button => {
 
-if (ui.secureMessage) {
+            button.addEventListener(
+                "click",
+                async () => {
 
-    ui.secureMessage.addEventListener(
-        "input",
-        () => {
+                    const percent =
+                        Number(
+                            button.dataset.eve
+                        );
 
-            const length =
-                ui.secureMessage.value.length;
+                    setEvePercentage(
+                        percent
+                    );
 
-            if (ui.messageText && length > 0) {
+                    updateParticleAttackState();
 
-                ui.messageText.textContent =
-                    `${length} character payload ready for transmission.`;
-            }
+                    await runSimulation(
+                        percent > 0,
+                        percent / 100
+                    );
+
+                }
+            );
+
         }
-    );
-}
+);
 
 
-// ============================================================
-// INITIALIZATION
-// ============================================================
+ui.generateButton.addEventListener(
+    "click",
+    generateSecureKey
+);
+
+
+ui.attackButton.addEventListener(
+    "click",
+    simulateAttack
+);
+
+
+ui.analyzeMessageButton.addEventListener(
+    "click",
+    analyzeMessage
+);
+
+
+ui.analyzeMultipleButton.addEventListener(
+    "click",
+    analyzeMultipleMessages
+);
+
+
+ui.sendMessageButton.addEventListener(
+    "click",
+    transmitMessage
+);
+
+
+ui.secureMessage.addEventListener(
+    "input",
+    () => {
+
+        /*
+            Live preview while typing.
+        */
+
+        const message =
+            ui.secureMessage.value;
+
+        const binary =
+            textToBinary(message);
+
+        const ones =
+            [...binary]
+                .filter(
+                    bit => bit === "1"
+                )
+                .length;
+
+        ui.messageChars.textContent =
+            message.length;
+
+        ui.messageBits.textContent =
+            binary.length;
+
+        ui.messageOnes.textContent =
+            ones;
+
+        ui.messageZeros.textContent =
+            binary.length - ones;
+
+        ui.binaryCount.textContent =
+            `${binary.length} BITS`;
+
+        ui.binaryPreview.textContent =
+            binary
+                ? binary.substring(0, 128)
+                : "Enter a message to generate binary telemetry.";
+
+    }
+);
+
+
+ui.multiMessages.addEventListener(
+    "input",
+    () => {
+
+        if (
+            ui.multiMessages.value.trim()
+        ) {
+
+            ui.multiAnalysisResult.innerHTML = `
+                <div class="empty-analysis">
+                    ${ui.multiMessages.value
+                        .split(/\r?\n/)
+                        .filter(line => line.trim())
+                        .length}
+                    message(s) ready for analysis.
+                </div>
+            `;
+
+        }
+
+    }
+);
+
+
+ui.clearEvents.addEventListener(
+    "click",
+    () => {
+
+        ui.eventLog.innerHTML = "";
+
+        addEvent(
+            "SYSTEM",
+            "Event stream cleared"
+        );
+
+    }
+);
+
+
+/* ============================================================
+   INITIALIZATION
+============================================================ */
 
 document.addEventListener(
     "DOMContentLoaded",
     async () => {
 
-        console.log(
-            "Q-SHIELD command center initialized."
-        );
+        createParticles();
 
-
-        // Initial slider
-        updateSliderDisplay();
-
+        updateSlider();
 
         addEvent(
             "SYSTEM",
             "Q-SHIELD security fabric online"
         );
 
-
         addEvent(
             "SYSTEM",
-            "BB84 protocol engine ready"
+            "BB84 quantum engine ready"
         );
 
+        /*
+            Analyze default message immediately.
+        */
 
-        // Start with clean channel
+        await analyzeMessage();
+
+        /*
+            Start clean.
+        */
+
         await runSimulation(
             false,
             0
         );
+
     }
 );

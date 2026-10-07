@@ -10,7 +10,7 @@
 
     <meta
         name="theme-color"
-        content="#02030A"
+        content="#030712"
     >
 
     <title>Q-SHIELD | Quantum Security Command Center</title>
@@ -23,776 +23,922 @@
 
 <body>
 
-    <!-- =====================================================
-         BACKGROUND
-    ====================================================== -->
+<div class="background-grid"></div>
+<div class="ambient-glow glow-one"></div>
+<div class="ambient-glow glow-two"></div>
 
-    <div class="background-grid"></div>
-    <div class="background-noise"></div>
+<header class="topbar">
 
-    <div class="ambient-glow glow-one"></div>
-    <div class="ambient-glow glow-two"></div>
+    <div class="brand">
 
+        <div class="brand-mark">
+            Q
+        </div>
 
-    <!-- =====================================================
-         TOP NAVIGATION
-    ====================================================== -->
-
-    <header class="topbar">
-
-        <div class="brand">
-
-            <div class="brand-mark">
-                Q
+        <div>
+            <div class="brand-name">
+                Q-SHIELD
             </div>
 
-            <div class="brand-text">
+            <div class="brand-subtitle">
+                QUANTUM SECURITY FABRIC
+            </div>
+        </div>
 
-                <div class="brand-name">
-                    Q-SHIELD
-                </div>
+    </div>
 
-                <div class="brand-subtitle">
-                    QUANTUM SECURITY FABRIC
-                </div>
+    <div class="system-status">
+        <span class="status-dot"></span>
+        QUANTUM ENGINE
+        <strong>ONLINE</strong>
+    </div>
+
+</header>
+
+
+<main class="dashboard">
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="hero">
+
+        <div class="hero-copy">
+
+            <div class="eyebrow">
+                CRITICAL INFRASTRUCTURE PROTECTION
+            </div>
+
+            <h1>
+                QUANTUM
+                <span>SECURITY</span>
+                COMMAND CENTER
+            </h1>
+
+            <p>
+                Interactive BB84 quantum key distribution,
+                eavesdropper detection and secure
+                infrastructure message protection.
+            </p>
+
+        </div>
+
+
+        <div class="protocol-card">
+
+            <div class="protocol-label">
+                ACTIVE PROTOCOL
+            </div>
+
+            <div class="protocol-name">
+                BB84
+            </div>
+
+            <div class="protocol-description">
+                Quantum Key Distribution
+            </div>
+
+            <div class="protocol-line"></div>
+
+            <div class="protocol-meta">
+
+                <span>
+                    QUANTUM STATES
+                </span>
+
+                <strong>
+                    512
+                </strong>
 
             </div>
 
         </div>
 
-
-        <div class="system-status">
-
-            <span class="status-dot"></span>
-
-            <span>
-                QUANTUM SECURITY
-            </span>
-
-            <span class="status-online">
-                ONLINE
-            </span>
-
-        </div>
-
-    </header>
-
+    </section>
 
 
     <!-- =====================================================
-         MAIN
+         MESSAGE LAB
     ====================================================== -->
 
-    <main class="dashboard">
+    <section class="panel message-lab">
 
+        <div class="section-heading">
 
-        <!-- =================================================
-             HERO
-        ================================================== -->
+            <div>
 
-        <section class="hero">
-
-            <div class="hero-copy">
-
-                <div class="eyebrow">
-                    CRITICAL INFRASTRUCTURE PROTECTION
+                <div class="panel-kicker">
+                    MESSAGE INTELLIGENCE LAB
                 </div>
 
-                <h1>
-                    QUANTUM
-                    <span>SECURITY</span>
-                    COMMAND CENTER
-                </h1>
+                <h2>
+                    ANALYZE A CRITICAL MESSAGE
+                </h2>
 
                 <p>
-                    Real-time BB84 quantum key distribution
-                    simulation, intrusion detection and
-                    secure communication monitoring.
+                    Enter infrastructure commands and observe
+                    how the payload is represented before quantum
+                    transmission.
                 </p>
 
             </div>
 
+            <div class="live-badge">
+                <span></span>
+                LIVE ANALYSIS
+            </div>
 
-            <div class="protocol-card">
+        </div>
 
-                <div class="protocol-label">
-                    ACTIVE PROTOCOL
+
+        <div class="message-lab-grid">
+
+            <div class="message-input-area">
+
+                <label for="secureMessage">
+                    INFRASTRUCTURE PAYLOAD
+                </label>
+
+                <textarea
+                    id="secureMessage"
+                    rows="6"
+                    placeholder="Example: Increase cooling system output to 92%."
+                >Increase cooling system output to 92%.</textarea>
+
+
+                <div class="message-actions">
+
+                    <button
+                        id="analyzeMessageButton"
+                        class="secondary-button"
+                    >
+                        ANALYZE MESSAGE
+                    </button>
+
+                    <button
+                        id="sendMessageButton"
+                        class="primary-button"
+                    >
+                        ENCRYPT &amp; TRANSMIT
+                    </button>
+
                 </div>
 
-                <div class="protocol-name">
-                    BB84
+
+                <div
+                    id="messageState"
+                    class="message-state"
+                >
+                    READY FOR ANALYSIS
                 </div>
 
-                <div class="protocol-description">
-                    Quantum Key Distribution
+            </div>
+
+
+            <div class="analysis-area">
+
+                <div class="analysis-title">
+                    PAYLOAD ANALYSIS
                 </div>
 
-                <div class="protocol-line"></div>
 
-                <div class="protocol-meta">
+                <div class="analysis-stats">
+
+                    <div class="analysis-stat">
+                        <span>CHARACTERS</span>
+                        <strong id="messageChars">
+                            0
+                        </strong>
+                    </div>
+
+                    <div class="analysis-stat">
+                        <span>TOTAL BITS</span>
+                        <strong id="messageBits">
+                            0
+                        </strong>
+                    </div>
+
+                    <div class="analysis-stat">
+                        <span>ONES</span>
+                        <strong id="messageOnes">
+                            0
+                        </strong>
+                    </div>
+
+                    <div class="analysis-stat">
+                        <span>ZEROS</span>
+                        <strong id="messageZeros">
+                            0
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="fingerprint-box">
 
                     <span>
-                        QUANTUM STATES
+                        SHA-256 FINGERPRINT
                     </span>
 
-                    <strong>
-                        512
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             QUANTUM NETWORK
-        ================================================== -->
-
-        <section class="panel network-panel">
-
-            <div class="panel-header">
-
-                <div>
-                    <div class="panel-kicker">
-                        QUANTUM NETWORK
-                    </div>
-
-                    <h2>
-                        SECURE COMMUNICATION FABRIC
-                    </h2>
-                </div>
-
-                <div class="live-badge">
-                    <span></span>
-                    LIVE
-                </div>
-
-            </div>
-
-
-            <div class="network">
-
-                <!-- ALICE -->
-
-                <div class="node node-alice">
-
-                    <div class="node-orbit">
-
-                        <div class="node-core">
-                            A
-                        </div>
-
-                    </div>
-
-                    <div class="node-name">
-                        ALICE
-                    </div>
-
-                    <div class="node-role">
-                        CONTROL CENTER
-                    </div>
+                    <code id="messageFingerprint">
+                        WAITING FOR INPUT
+                    </code>
 
                 </div>
 
 
-                <!-- QUANTUM CHANNEL -->
+                <div class="binary-box">
 
-                <div class="quantum-link">
+                    <div class="binary-header">
+                        <span>
+                            UTF-8 BINARY PREVIEW
+                        </span>
 
-                    <div class="link-label">
-                        QUANTUM CHANNEL
+                        <span id="binaryCount">
+                            0 BITS
+                        </span>
                     </div>
 
-                    <div class="link-line">
-
-                        <span class="particle p1"></span>
-                        <span class="particle p2"></span>
-                        <span class="particle p3"></span>
-
-                    </div>
-
-                    <div class="quantum-states">
-
-                        <span>|0⟩</span>
-                        <span>|+⟩</span>
-                        <span>|1⟩</span>
-                        <span>|−⟩</span>
-
-                    </div>
-
-                </div>
-
-
-                <!-- EVE -->
-
-                <div class="eve-interceptor">
-
-                    <div class="eve-ring">
-
-                        <div class="eve-core">
-                            E
-                        </div>
-
-                    </div>
-
-                    <div class="eve-name">
-                        EVE
-                    </div>
-
-                    <div class="eve-role">
-                        THREAT ACTOR
-                    </div>
-
-                </div>
-
-
-                <!-- BOB -->
-
-                <div class="node node-bob">
-
-                    <div class="node-orbit">
-
-                        <div class="node-core">
-                            B
-                        </div>
-
-                    </div>
-
-                    <div class="node-name">
-                        BOB
-                    </div>
-
-                    <div class="node-role">
-                        REMOTE FACILITY
+                    <div id="binaryPreview">
+                        Enter a message to generate binary telemetry.
                     </div>
 
                 </div>
 
             </div>
 
-        </section>
+        </div>
+
+    </section>
 
 
+    <!-- =====================================================
+         QUANTUM NETWORK
+    ====================================================== -->
 
-        <!-- =================================================
-             TELEMETRY
-        ================================================== -->
+    <section class="panel network-panel">
 
-        <section class="telemetry-grid">
+        <div class="section-heading">
 
+            <div>
 
-            <!-- QBER -->
-
-            <article class="telemetry-card qber-card">
-
-                <div class="telemetry-top">
-
-                    <span class="telemetry-label">
-                        QUANTUM BIT ERROR RATE
-                    </span>
-
-                    <span
-                        id="qberStatus"
-                        class="telemetry-state"
-                    >
-                        WITHIN POLICY
-                    </span>
-
+                <div class="panel-kicker">
+                    QUANTUM NETWORK
                 </div>
 
+                <h2>
+                    LIVE BB84 TRANSMISSION
+                </h2>
 
-                <div class="metric-large">
+            </div>
 
-                    <span id="qberValue">
-                        0.00%
-                    </span>
+            <div
+                id="channelStateLabel"
+                class="channel-status secure"
+            >
+                CHANNEL SECURE
+            </div>
 
-                </div>
+        </div>
 
 
-                <div class="qber-scale">
+        <div class="network-stage">
 
-                    <div class="qber-track">
+            <!-- ALICE -->
 
-                        <div
-                            id="qberFill"
-                            class="qber-fill"
-                            style="width: 0%"
-                        ></div>
+            <div class="network-node alice-node">
 
+                <div class="node-orbit">
+                    <div class="node-core">
+                        A
                     </div>
+                </div>
 
-                    <div class="qber-markers">
+                <strong>
+                    ALICE
+                </strong>
 
-                        <span>
-                            0%
-                        </span>
+                <span>
+                    SENDER
+                </span>
 
-                        <span>
-                            11% POLICY
-                        </span>
+            </div>
 
-                        <span>
-                            25%
-                        </span>
 
-                    </div>
+            <!-- TRANSMISSION -->
+
+            <div class="transmission-zone">
+
+                <div class="route-label">
+                    QUANTUM CHANNEL
+                </div>
+
+                <div class="route">
+
+                    <div class="route-line"></div>
+
+                    <div
+                        id="liveParticle"
+                        class="live-particle"
+                    ></div>
+
+                    <div
+                        id="particleLayer"
+                        class="particle-layer"
+                    ></div>
 
                 </div>
 
-            </article>
+                <div class="state-labels">
 
-
-
-            <!-- KEY -->
-
-            <article class="telemetry-card">
-
-                <div class="telemetry-top">
-
-                    <span class="telemetry-label">
-                        SHARED KEY
-                    </span>
-
-                    <span class="telemetry-icon">
-                        ◈
-                    </span>
+                    <span>|0⟩</span>
+                    <span>|1⟩</span>
+                    <span>|+⟩</span>
+                    <span>|−⟩</span>
 
                 </div>
 
-
-                <div
-                    id="keyLength"
-                    class="metric-large"
-                >
-                    0 BITS
-                </div>
-
-
-                <div
-                    id="keyStatus"
-                    class="metric-subtext"
-                >
-                    WAITING
-                </div>
-
-            </article>
-
+            </div>
 
 
             <!-- EVE -->
 
-            <article class="telemetry-card eve-card">
+            <div
+                id="eveNode"
+                class="network-node eve-node"
+            >
 
-                <div class="telemetry-top">
+                <div class="eve-ring">
 
-                    <span class="telemetry-label">
-                        EVE ACTIVITY
-                    </span>
-
-                    <span class="telemetry-icon">
-                        ◉
-                    </span>
+                    <div class="eve-core">
+                        E
+                    </div>
 
                 </div>
 
+                <strong>
+                    EVE
+                </strong>
+
+                <span>
+                    THREAT ACTOR
+                </span>
 
                 <div
-                    id="eveCount"
-                    class="metric-large"
-                >
-                    0 STATES
-                </div>
-
-
-                <div
-                    id="eveState"
-                    class="metric-subtext"
+                    id="eveNodeStatus"
+                    class="node-threat"
                 >
                     INACTIVE
                 </div>
 
-            </article>
-
-
-
-            <!-- THREAT -->
-
-            <article class="telemetry-card threat-card">
-
-                <div class="telemetry-top">
-
-                    <span class="telemetry-label">
-                        CHANNEL THREAT
-                    </span>
-
-                    <span class="telemetry-icon">
-                        !
-                    </span>
-
-                </div>
-
-
-                <div
-                    id="threatLevel"
-                    class="metric-large"
-                >
-                    LOW
-                </div>
-
-
-                <div class="metric-subtext">
-                    SECURITY CLASSIFICATION
-                </div>
-
-            </article>
-
-        </section>
-
-
-
-        <!-- =================================================
-             OPERATIONS
-        ================================================== -->
-
-        <section class="operations-grid">
-
-
-            <!-- =============================================
-                 SECURITY CONTROL
-            ============================================== -->
-
-            <article class="panel control-panel">
-
-                <div class="panel-header">
-
-                    <div>
-
-                        <div class="panel-kicker">
-                            ATTACK SIMULATION
-                        </div>
-
-                        <h2>
-                            EAVESDROPPER CONTROL
-                        </h2>
-
-                    </div>
-
-                    <div class="control-indicator">
-                        EVE
-                    </div>
-
-                </div>
-
-
-                <div class="eve-control">
-
-                    <div class="control-row">
-
-                        <span>
-                            INTERCEPTION PROBABILITY
-                        </span>
-
-                        <strong id="eveProbability">
-                            0%
-                        </strong>
-
-                    </div>
-
-
-                    <input
-                        type="range"
-                        id="eveSlider"
-                        min="0"
-                        max="100"
-                        value="0"
-                        step="5"
-                    >
-
-
-                    <div class="slider-labels">
-
-                        <span>
-                            0%
-                        </span>
-
-                        <span>
-                            25%
-                        </span>
-
-                        <span>
-                            50%
-                        </span>
-
-                        <span>
-                            75%
-                        </span>
-
-                        <span>
-                            100%
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="button-row">
-
-                    <button
-                        id="generateButton"
-                        class="primary-button"
-                    >
-                        <span>◈</span>
-                        GENERATE SECURE KEY
-                    </button>
-
-
-                    <button
-                        id="attackButton"
-                        class="danger-button"
-                    >
-                        <span>⚠</span>
-                        SIMULATE ATTACK
-                    </button>
-
-                </div>
-
-            </article>
-
-
-
-            <!-- =============================================
-                 SECURE MESSAGE
-            ============================================== -->
-
-            <article class="panel message-panel">
-
-                <div class="panel-header">
-
-                    <div>
-
-                        <div class="panel-kicker">
-                            CRITICAL COMMAND CHANNEL
-                        </div>
-
-                        <h2>
-                            SECURE TRANSMISSION
-                        </h2>
-
-                    </div>
-
-                    <div class="lock-icon">
-                        ⌁
-                    </div>
-
-                </div>
-
-
-                <label
-                    for="secureMessage"
-                    class="message-label"
-                >
-                    SENSITIVE INFRASTRUCTURE PAYLOAD
-                </label>
-
-
-                <textarea
-                    id="secureMessage"
-                    rows="4"
-                    placeholder="Enter a critical infrastructure command..."
-                >Increase cooling system output to 92%.</textarea>
-
-
-                <button
-                    id="sendMessageButton"
-                    class="transmit-button"
-                >
-                    ENCRYPT &amp; TRANSMIT
-                </button>
-
-
-                <div class="message-result">
-
-                    <div
-                        id="messageState"
-                        class="message-state"
-                    >
-                        READY
-                    </div>
-
-                    <div
-                        id="messageText"
-                        class="message-text"
-                    >
-                        Awaiting secure transmission.
-                    </div>
-
-                </div>
-
-            </article>
-
-        </section>
-
-
-
-        <!-- =================================================
-             SECURITY STATE
-        ================================================== -->
-
-        <section class="security-state panel">
-
-            <div
-                id="securityIcon"
-                class="security-icon"
-            >
-                ✓
             </div>
 
 
-            <div class="security-copy">
+            <!-- BOB -->
 
-                <div class="panel-kicker">
-                    SYSTEM SECURITY STATE
-                </div>
+            <div class="network-node bob-node">
 
-                <h2 id="securityStatus">
-                    SECURE
-                </h2>
-
-                <p id="securityDescription">
-                    Quantum channel integrity verified.
-                </p>
-
-            </div>
-
-
-            <div class="security-meta">
-
-                <div>
-                    <span>
-                        PROTOCOL
-                    </span>
-
-                    <strong>
-                        BB84
-                    </strong>
-                </div>
-
-
-                <div>
-                    <span>
-                        POLICY
-                    </span>
-
-                    <strong>
-                        11% QBER
-                    </strong>
-                </div>
-
-
-                <div>
-                    <span>
-                        CHANNEL
-                    </span>
-
-                    <strong>
-                        ACTIVE
-                    </strong>
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             EVENT LOG
-        ================================================== -->
-
-        <section class="panel event-panel">
-
-            <div class="panel-header">
-
-                <div>
-
-                    <div class="panel-kicker">
-                        SECURITY TELEMETRY
+                <div class="node-orbit">
+                    <div class="node-core">
+                        B
                     </div>
-
-                    <h2>
-                        EVENT STREAM
-                    </h2>
-
                 </div>
 
-                <div class="event-live">
-                    LIVE FEED
-                </div>
+                <strong>
+                    BOB
+                </strong>
+
+                <span>
+                    RECEIVER
+                </span>
 
             </div>
 
-
-            <div
-                id="eventLog"
-                class="event-log"
-            >
-
-                <div class="event event-system">
-
-                    <span class="event-time">
-                        --:--:--
-                    </span>
-
-                    <span class="event-type">
-                        SYSTEM
-                    </span>
-
-                    <span class="event-message">
-                        Initializing Q-SHIELD security fabric...
-                    </span>
-
-                </div>
-
-            </div>
-
-        </section>
+        </div>
 
 
-
-        <!-- =================================================
-             FOOTER
-        ================================================== -->
-
-        <footer class="footer">
+        <div class="network-telemetry">
 
             <div>
-                Q-SHIELD
+                <span>TRANSMITTED</span>
+                <strong id="transmittedCount">
+                    0
+                </strong>
+                <small>STATES</small>
             </div>
 
             <div>
-                QUANTUM-SECURE COMMUNICATION
+                <span>INTERCEPTED</span>
+                <strong id="interceptedCount">
+                    0
+                </strong>
+                <small>STATES</small>
             </div>
 
             <div>
-                BB84 • QKD • INTRUSION DETECTION
+                <span>RETAINED</span>
+                <strong id="retainedCount">
+                    0
+                </strong>
+                <small>BITS</small>
             </div>
 
-        </footer>
+            <div>
+                <span>CURRENT QUBIT</span>
+                <strong id="currentQubit">
+                    —
+                </strong>
+                <small>LIVE</small>
+            </div>
 
-    </main>
+        </div>
+
+    </section>
 
 
     <!-- =====================================================
-         JAVASCRIPT
+         TELEMETRY
     ====================================================== -->
 
-    <script src="/static/app.js"></script>
+    <section class="telemetry-grid">
+
+        <article class="telemetry-card">
+
+            <div class="telemetry-top">
+                <span>QUANTUM BIT ERROR RATE</span>
+
+                <span id="qberStatus">
+                    WITHIN POLICY
+                </span>
+            </div>
+
+            <div
+                id="qberValue"
+                class="metric-large"
+            >
+                0.00%
+            </div>
+
+            <div class="qber-track">
+                <div
+                    id="qberFill"
+                    class="qber-fill"
+                ></div>
+            </div>
+
+            <div class="scale-labels">
+                <span>0%</span>
+                <span>11% POLICY</span>
+                <span>25%</span>
+            </div>
+
+        </article>
+
+
+        <article class="telemetry-card">
+
+            <div class="telemetry-top">
+                <span>SHARED KEY</span>
+                <span>◈</span>
+            </div>
+
+            <div
+                id="keyLength"
+                class="metric-large"
+            >
+                0 BITS
+            </div>
+
+            <div
+                id="keyStatus"
+                class="metric-subtext"
+            >
+                WAITING
+            </div>
+
+        </article>
+
+
+        <article class="telemetry-card">
+
+            <div class="telemetry-top">
+                <span>EVE ACTIVITY</span>
+                <span>◉</span>
+            </div>
+
+            <div
+                id="eveCount"
+                class="metric-large"
+            >
+                0 STATES
+            </div>
+
+            <div
+                id="eveState"
+                class="metric-subtext"
+            >
+                INACTIVE
+            </div>
+
+        </article>
+
+
+        <article class="telemetry-card">
+
+            <div class="telemetry-top">
+                <span>CHANNEL THREAT</span>
+                <span>!</span>
+            </div>
+
+            <div
+                id="threatLevel"
+                class="metric-large"
+            >
+                LOW
+            </div>
+
+            <div
+                id="threatPercentage"
+                class="metric-subtext"
+            >
+                0% EXPOSURE
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- =====================================================
+         OPERATIONS
+    ====================================================== -->
+
+    <section class="operations-grid">
+
+
+        <!-- EVE CONTROL -->
+
+        <article class="panel control-panel">
+
+            <div class="panel-kicker">
+                ADVERSARY SIMULATION
+            </div>
+
+            <h2>
+                EVE INTERCEPTION CONTROL
+            </h2>
+
+            <div class="eve-percentage">
+
+                <span>
+                    INTERCEPTION PROBABILITY
+                </span>
+
+                <strong id="eveProbability">
+                    0%
+                </strong>
+
+            </div>
+
+
+            <input
+                id="eveSlider"
+                type="range"
+                min="0"
+                max="100"
+                value="0"
+                step="5"
+            >
+
+
+            <div class="slider-labels">
+                <span>0%</span>
+                <span>25%</span>
+                <span>50%</span>
+                <span>75%</span>
+                <span>100%</span>
+            </div>
+
+
+            <div class="preset-grid">
+
+                <button
+                    class="preset-button"
+                    data-eve="0"
+                >
+                    CLEAN
+                </button>
+
+                <button
+                    class="preset-button"
+                    data-eve="25"
+                >
+                    25%
+                </button>
+
+                <button
+                    class="preset-button"
+                    data-eve="50"
+                >
+                    50%
+                </button>
+
+                <button
+                    class="preset-button"
+                    data-eve="75"
+                >
+                    75%
+                </button>
+
+                <button
+                    class="preset-button danger"
+                    data-eve="100"
+                >
+                    FULL ATTACK
+                </button>
+
+            </div>
+
+
+            <div class="button-row">
+
+                <button
+                    id="generateButton"
+                    class="primary-button"
+                >
+                    GENERATE SECURE KEY
+                </button>
+
+                <button
+                    id="attackButton"
+                    class="danger-button"
+                >
+                    SIMULATE ATTACK
+                </button>
+
+            </div>
+
+        </article>
+
+
+        <!-- LIVE INSPECTOR -->
+
+        <article class="panel inspector-panel">
+
+            <div class="panel-kicker">
+                QUANTUM STATE INSPECTOR
+            </div>
+
+            <h2>
+                LIVE QUBIT
+            </h2>
+
+            <div class="inspector-index">
+                QUBIT
+                <strong id="inspectorIndex">
+                    —
+                </strong>
+            </div>
+
+
+            <div class="inspector-grid">
+
+                <div>
+                    <span>ALICE BIT</span>
+                    <strong id="inspectorAliceBit">—</strong>
+                </div>
+
+                <div>
+                    <span>ALICE BASIS</span>
+                    <strong id="inspectorAliceBasis">—</strong>
+                </div>
+
+                <div>
+                    <span>QUANTUM STATE</span>
+                    <strong id="inspectorState">—</strong>
+                </div>
+
+                <div>
+                    <span>EVE</span>
+                    <strong id="inspectorEve">—</strong>
+                </div>
+
+                <div>
+                    <span>EVE BASIS</span>
+                    <strong id="inspectorEveBasis">—</strong>
+                </div>
+
+                <div>
+                    <span>EVE BIT</span>
+                    <strong id="inspectorEveBit">—</strong>
+                </div>
+
+                <div>
+                    <span>BOB BASIS</span>
+                    <strong id="inspectorBobBasis">—</strong>
+                </div>
+
+                <div>
+                    <span>BOB BIT</span>
+                    <strong id="inspectorBobBit">—</strong>
+                </div>
+
+                <div>
+                    <span>SIFTED</span>
+                    <strong id="inspectorSifted">—</strong>
+                </div>
+
+                <div>
+                    <span>ERROR</span>
+                    <strong id="inspectorError">—</strong>
+                </div>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- =====================================================
+         MULTIPLE MESSAGE ANALYSIS
+    ====================================================== -->
+
+    <section class="panel multi-message-panel">
+
+        <div class="section-heading">
+
+            <div>
+                <div class="panel-kicker">
+                    COMMAND COMPARISON
+                </div>
+
+                <h2>
+                    MULTIPLE MESSAGE ANALYSIS
+                </h2>
+
+                <p>
+                    Compare several infrastructure messages and
+                    inspect their payload sizes and fingerprints.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="multi-input-row">
+
+            <textarea
+                id="multiMessages"
+                rows="6"
+                placeholder="Enter one message per line.
+
+Increase cooling system output to 92%.
+Open emergency water valve 04.
+Switch backup generator to reserve mode."
+            ></textarea>
+
+            <button
+                id="analyzeMultipleButton"
+                class="secondary-button"
+            >
+                ANALYZE ALL MESSAGES
+            </button>
+
+        </div>
+
+
+        <div
+            id="multiAnalysisResult"
+            class="multi-analysis-result"
+        >
+
+            <div class="empty-analysis">
+                Enter multiple messages above and click
+                <strong>ANALYZE ALL MESSAGES</strong>.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SECURITY STATE
+    ====================================================== -->
+
+    <section
+        id="securityPanel"
+        class="security-state panel"
+    >
+
+        <div
+            id="securityIcon"
+            class="security-icon"
+        >
+            ✓
+        </div>
+
+        <div class="security-copy">
+
+            <div class="panel-kicker">
+                SYSTEM SECURITY STATE
+            </div>
+
+            <h2 id="securityStatus">
+                SECURE
+            </h2>
+
+            <p id="securityDescription">
+                Quantum channel integrity verified.
+            </p>
+
+        </div>
+
+        <div class="security-meta">
+
+            <div>
+                <span>PROTOCOL</span>
+                <strong>BB84</strong>
+            </div>
+
+            <div>
+                <span>POLICY</span>
+                <strong>11% QBER</strong>
+            </div>
+
+            <div>
+                <span>CHANNEL</span>
+                <strong id="securityChannel">
+                    ACTIVE
+                </strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         EVENT STREAM
+    ====================================================== -->
+
+    <section class="panel event-panel">
+
+        <div class="section-heading">
+
+            <div>
+
+                <div class="panel-kicker">
+                    SECURITY TELEMETRY
+                </div>
+
+                <h2>
+                    LIVE EVENT STREAM
+                </h2>
+
+            </div>
+
+            <button
+                id="clearEvents"
+                class="small-button"
+            >
+                CLEAR
+            </button>
+
+        </div>
+
+
+        <div
+            id="eventLog"
+            class="event-log"
+        ></div>
+
+    </section>
+
+
+    <footer class="footer">
+
+        <strong>
+            Q-SHIELD
+        </strong>
+
+        <span>
+            QUANTUM-SECURE COMMUNICATION
+        </span>
+
+        <span>
+            VEYLITH • BB84 • QKD • INTRUSION DETECTION
+        </span>
+
+    </footer>
+
+</main>
+
+
+<script src="/static/app.js"></script>
 
 </body>
 </html>
-
